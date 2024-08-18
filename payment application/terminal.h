@@ -1,0 +1,6 @@
+#ifndef TERMINAL_H_INCLUDED
+#define TERMINAL_H_INCLUDED
+
+
+
+#endif // TERMINAL_H_INCLUDED
