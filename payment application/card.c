@@ -30,7 +30,7 @@ void getCardHolderNameTest(void)
     ST_cardData_t CardData;
     EN_cardError_t Test;
     printf("Tester Name : Ibrahim Mohamed \n");
-    printf("Function Name : getCardHolderName \n");
+    printf("Function Name : getCardHolderNameTest \n");
     printf("===========================================\n");
     printf("Test Case 1:NULL\n");
     printf("Input Data:");
@@ -67,12 +67,11 @@ EN_cardError_t getCardExpiryDate(ST_cardData_t *cardData)
     else{
         unit32 i=0;
         for(i=0;i<strlen(date);++i){
-            if(date[2] != '/' ||(date[0] =='1' && date[1] > '2')|| date[0] > '1' || (date[3] >'2' && date[4] > '1') ){
+            if(date[2] != '/' ||(date[0] =='1' && date[1] > '2')|| date[0] > '1' ){
                 return WRONG_EXP_DATE;
             }
         }
-        for (unit32 i=0;i<5;++i)
-    {
+        for (unit32 i=0;i<5;++i){
         cardData->cardExpirationDate[i] = date[i];
     }
     cardData->cardExpirationDate[strlen(date)] = '\0';
@@ -84,7 +83,7 @@ void getCardExpiryDateTest (void)
     ST_cardData_t CardData;
     EN_cardError_t Test;
     printf("Tester Name : Ibrahim Mohamed \n");
-    printf("Function Name : getCardExpiryDate \n");
+    printf("Function Name : getCardExpiryDateTest \n");
     printf("===========================================\n");
     printf("Test Case 1:NULL\n");
     printf("Input Data:");
@@ -104,13 +103,7 @@ void getCardExpiryDateTest (void)
     printf("Expected Result: WRONG_EXP_DATE\n");
     printf("Actual Result:%s\n",Test==WRONG_EXP_DATE? "WRONG_EXP_DATE":"CARD_OK");
      printf("===========================================\n");
-    printf("Test Case 4:05/32\n");
-    printf("Input Data:");
-    Test=getCardExpiryDate(&CardData);
-    printf("Expected Result: WRONG_EXP_DATE\n");
-    printf("Actual Result:%s\n",Test==WRONG_EXP_DATE? "WRONG_EXP_DATE":"CARD_OK");
-     printf("===========================================\n");
-    printf("Test Case 5:05/25\n");
+    printf("Test Case 4:05/25\n");
     printf("Input Data:");
     Test=getCardExpiryDate(&CardData);
     printf("Expected Result: CARD_OK\n");
@@ -136,7 +129,7 @@ void getCardPANTest(void)
     ST_cardData_t CardData;
     EN_cardError_t Test;
     printf("Tester Name : Ibrahim Mohamed \n");
-    printf("Function Name : getCardPAN \n");
+    printf("Function Name : getCardPANTest \n");
     printf("===========================================\n");
     printf("Test Case 1:NULL\n");
     printf("Input Data:");

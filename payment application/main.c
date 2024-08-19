@@ -8,6 +8,7 @@ int main()
 //getCardHolderNameTest();
 //getCardExpiryDateTest();
 //getCardPANTest();
-getTransactionDateTest();
+//getTransactionDateTest();
+isCardExpriedTest();
     return 0;
 }

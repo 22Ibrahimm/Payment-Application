@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <ctype.h>
+#include <time.h>
 #include "terminal.h"
 EN_terminalError_t getTransactionDate(ST_terminalData_t *termData)
 {
@@ -20,39 +21,105 @@ EN_terminalError_t getTransactionDate(ST_terminalData_t *termData)
 }
 void getTransactionDateTest(void)
 {
-    ST_terminalData_t TermData;
+    ST_terminalData_t TermDate;
     EN_terminalError_t Test;
     printf("Tester Name : Ibrahim Mohamed \n");
     printf("Function Name : getTransactionDate \n");
     printf("===========================================\n");
     printf("Test Case 1:NULL\n");
     printf("Input Data:");
-    Test = getTransactionDate(&TermData);
+    Test = getTransactionDate(&TermDate);
      printf("Expected Result: WRONG_DATE\n");
     printf("Actual Result: %s\n", Test == WRONG_DATE ? "WRONG_DATE" : "TERMINAL_OK");
     printf("===========================================\n");
     printf("Test Case 2:22*10*2005\n");
     printf("Input Data:");
-    Test=getTransactionDate(&TermData);
+    Test=getTransactionDate(&TermDate);
      printf("Expected Result: WRONG_DATE\n");
     printf("Actual Result:%s\n",Test==WRONG_DATE? "WRONG_DATE":"TERMINAL_OK");
     printf("===========================================\n");
     printf("Test Case 3:22/8/22 \n");
     printf("Input Data:");
-    Test=getTransactionDate(&TermData);
+    Test=getTransactionDate(&TermDate);
      printf("Expected Result: WRONG_DATE\n");
     printf("Actual Result:%s\n",Test==WRONG_DATE? "WRONG_DATE":"TERMINAL_OK");
      printf("===========================================\n");
     printf("Test Case 4:22/08/200444\n");
     printf("Input Data:");
-    Test=getTransactionDate(&TermData);
+    Test=getTransactionDate(&TermDate);
     printf("Expected Result: WRONG_DATE\n");
     printf("Actual Result:%s\n",Test==TERMINAL_OK? "TERMINAL_OK":"WRONG_DATE");
     printf("===========================================\n");
     printf("Test Case 5:22/08/2004\n");
     printf("Input Data:");
-    Test=getTransactionDate(&TermData);
+    Test=getTransactionDate(&TermDate);
     printf("Expected Result: TERMINAL_OK\n");
     printf("Actual Result:%s\n",Test==TERMINAL_OK? "TERMINAL_OK":"WRONG_DATE");
+}
+EN_terminalError_t isCardExpired(ST_cardData_t *cardData, ST_terminalData_t *termData)
+{
+    if(cardData == NULL || termData == NULL){
+        return EXPIRED_CARD;
+    }
+    if(cardData->cardExpirationDate[3]<termData->transactionDate[8]
+    ||((cardData->cardExpirationDate[3]==termData->transactionDate[8])
+    &&(cardData->cardExpirationDate[4]<termData->transactionDate[9]))){
+        return EXPIRED_CARD;
+     }
+            if((cardData->cardExpirationDate[3]==termData->transactionDate[8])
+            &&(cardData->cardExpirationDate[4]<termData->transactionDate[9])){
+                if(cardData->cardExpirationDate[0]<termData->transactionDate[3]
+                ||((cardData->cardExpirationDate[0]==termData->transactionDate[3])
+                 &&(cardData->cardExpirationDate[1]<termData->transactionDate[4]))){
+                         return EXPIRED_CARD;
+            }
+            else{
+                return TERMINAL_OK;
+            }
+        }
+        else{
+            return TERMINAL_OK;
+        }
+}
+void isCardExpriedTest(void)
+{
+    ST_cardData_t CardDate;
+    ST_terminalData_t TermDate;
+    EN_terminalError_t Test;
+    printf("Tester Name : Ibrahim Mohamed \n");
+    printf("Function Name : isCardExpriedTest \n");
+    printf("===========================================\n");
+    printf("Test Case 1:NULL\n");
+    printf("Input Data:");
+    getCardExpiryDate(NULL);
+    getTransactionDate(NULL);
+    Test = isCardExpired(NULL,NULL);
+    printf("Expected Result: EXPIRED_CARD\n");
+    printf("Actual Result: %s\n", Test == EXPIRED_CARD ? "EXPIRED_CARD" : "TERMINAL_OK");
+    printf("===========================================\n");
+        printf("Test Case 2:Before\n");
+    printf("Input Data:");
+    getCardExpiryDate(&CardDate);
+    getTransactionDate(&TermDate);
+    Test = isCardExpired(&CardDate,&TermDate);
+    printf("Expected Result: EXPIRED_CARD\n");
+    printf("Actual Result: %s\n", Test == EXPIRED_CARD ? "EXPIRED_CARD" : "TERMINAL_OK");
+    printf("===========================================\n");
+        printf("Test Case 3:After\n");
+    printf("Input Data:");
+    getCardExpiryDate(&CardDate);
+    getTransactionDate(&TermDate);
+    Test = isCardExpired(&CardDate,&TermDate);
+    printf("Expected Result: TERMINAL_OK\n");
+    printf("Actual Result: %s\n", Test == EXPIRED_CARD ? "EXPIRED_CARD" : "TERMINAL_OK");
+    printf("===========================================\n");
+        printf("Test Case 4:Equal\n");
+    printf("Input Data:");
+    getCardExpiryDate(&CardDate);
+    getTransactionDate(&TermDate);
+    Test = isCardExpired(&CardDate,&TermDate);
+    printf("Expected Result: TERMINAL_OK\n");
+    printf("Actual Result: %s\n", Test == EXPIRED_CARD ? "EXPIRED_CARD" : "TERMINAL_OK");
+
 }
 
