@@ -159,5 +159,44 @@ void getTransactionAmountTest(void)
     printf("Expected Result: TERMINAL_OK\n");
     printf("Actual Result:%s\n",Test==TERMINAL_OK? "TERMINAL_OK":"INVALID_AMOUNT");
 }
+EN_terminalError_t isBelowMaxAmount(ST_terminalData_t *termData)
+{
+    termData->maxTransAmount=200;
+    if(termData == NULL || termData->transAmount > termData->maxTransAmount){
+        return EXCEED_MAX_AMOUNT;
+    }
+    else{
+        return TERMINAL_OK;
+    }
+}
+void isBelowMaxAmountTest(void)
+{
+    ST_terminalData_t TermDate;
+    EN_terminalError_t Test;
+    printf("Tester Name : Ibrahim Mohamed \n");
+    printf("Function Name : isBelowMaxAmount \n");
+    printf("===========================================\n");
+    printf("Test Case 1:Amount greater than max\n");
+    printf("Input Data:");
+    getTransactionAmount(&TermDate);
+    Test=isBelowMaxAmount(&TermDate);
+     printf("Expected Result: EXCEED_MAX_AMOUNT\n");
+    printf("Actual Result:%s\n",Test==EXCEED_MAX_AMOUNT? "EXCEED_MAX_AMOUNT":"TERMINAL_OK");
+    printf("===========================================\n");
+    printf("Test Case 2:Amount equal than max\n");
+    printf("Input Data:");
+    getTransactionAmount(&TermDate);
+    Test=isBelowMaxAmount(&TermDate);
+    printf("Expected Result: TERMINAL_OK\n");
+    printf("Actual Result:%s\n",Test==TERMINAL_OK? "TERMINAL_OK":"EXCEED_MAX_AMOUNT");
+    printf("===========================================\n");
+    printf("Test Case 3:Amount less than max\n");
+    printf("Input Data:");
+    getTransactionAmount(&TermDate);
+    Test=isBelowMaxAmount(&TermDate);
+    printf("Expected Result: TERMINAL_OK\n");
+    printf("Actual Result:%s\n",Test==TERMINAL_OK? "TERMINAL_OK":"EXCEED_MAX_AMOUNT");
+}
+
 
 

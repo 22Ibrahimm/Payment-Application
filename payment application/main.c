@@ -10,6 +10,7 @@ int main()
 //getCardPANTest();
 //getTransactionDateTest();
 //isCardExpriedTest();
-getTransactionAmountTest();
+//getTransactionAmountTest();
+isBelowMaxAmountTest();
     return 0;
 }

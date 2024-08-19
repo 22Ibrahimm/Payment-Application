@@ -24,5 +24,5 @@ EN_terminalError_t isValidCardPAN(ST_cardData_t *cardData);
 void getTransactionDateTest(void);
 void isCardExpriedTest(void);
 void getTransactionAmountTest(void);
-
+void isBelowMaxAmountTest(void);
 #endif // TERMINAL_H_INCLUDED
