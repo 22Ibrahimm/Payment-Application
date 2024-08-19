@@ -5,7 +5,7 @@
 #include "card.h"
 EN_cardError_t getCardHolderName (ST_cardData_t *cardData)
 {
-    unit8 name[27];
+    unit8 name[27]={};
     gets(name);
     if( cardData == NULL || strlen(name)>24 || strlen(name)<20){
         return WRONG_NAME;
@@ -112,4 +112,47 @@ void getCardExpiryDateTest (void)
     Test=getCardExpiryDate(&CardData);
     printf("Expected Result: CARD_OK\n");
     printf("Actual Result:%s\n",Test==WRONG_EXP_DATE? "WRONG_EXP_DATE":"CARD_OK");
+}
+EN_cardError_t getCardPAN(ST_cardData_t *cardData)
+{
+    unit8 CardPAN[25]={};
+        gets(CardPAN);
+         if( cardData == NULL || strlen(CardPAN)>19 || strlen(CardPAN)<16){
+            return WRONG_PAN;
+        }
+        else{
+            return CARD_OK;
+        }
+}
+void getCardPANTest(void)
+{
+    ST_cardData_t CardData;
+    EN_cardError_t Test;
+    printf("Tester Name : Ibrahim Mohamed \n");
+    printf("Function Name : getCardPAN \n");
+    printf("===========================================\n");
+    printf("Test Case 1:NULL\n");
+    printf("Input Data:");
+    Test=getCardPAN(&CardData);
+    printf("Expected Result: WRONG_PAN\n");
+    printf("Actual Result:%s\n",Test==WRONG_PAN? "WRONG_PAN":"CARD_OK");
+    printf("===========================================\n");
+    printf("Test Case 2:123456\n");
+    printf("Input Data:");
+    Test=getCardPAN(&CardData);
+    printf("Expected Result: WRONG_PAN\n");
+    printf("Actual Result:%s\n",Test==WRONG_PAN? "WRONG_PAN":"CARD_OK");
+     printf("===========================================\n");
+    printf("Test Case 3:123456789123456789123456\n");
+    printf("Input Data:");
+    Test=getCardPAN(&CardData);
+    printf("Expected Result: WRONG_PAN\n");
+    printf("Actual Result:%s\n",Test==WRONG_PAN? "WRONG_PAN":"CARD_OK");
+     printf("===========================================\n");
+    printf("Test Case 4:123456789123456789\n");
+    printf("Input Data:");
+    Test=getCardPAN(&CardData);
+    printf("Expected Result: CARD_OK\n");
+    printf("Actual Result:%s\n",Test==WRONG_PAN? "WRONG_PAN":"CARD_OK");
+
 }

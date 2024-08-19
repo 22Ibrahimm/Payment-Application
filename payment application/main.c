@@ -4,7 +4,8 @@
 #include "card.h"
 int main()
 {
-getCardHolderNameTest();
+//getCardHolderNameTest();
 //getCardExpiryDateTest();
+getCardPANTest();
     return 0;
 }
