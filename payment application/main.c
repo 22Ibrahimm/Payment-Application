@@ -9,6 +9,7 @@ int main()
 //getCardExpiryDateTest();
 //getCardPANTest();
 //getTransactionDateTest();
-isCardExpriedTest();
+//isCardExpriedTest();
+getTransactionAmountTest();
     return 0;
 }

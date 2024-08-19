@@ -30,7 +30,7 @@ void getCardHolderNameTest(void)
     ST_cardData_t CardData;
     EN_cardError_t Test;
     printf("Tester Name : Ibrahim Mohamed \n");
-    printf("Function Name : getCardHolderNameTest \n");
+    printf("Function Name : getCardHolderName \n");
     printf("===========================================\n");
     printf("Test Case 1:NULL\n");
     printf("Input Data:");
@@ -83,7 +83,7 @@ void getCardExpiryDateTest (void)
     ST_cardData_t CardData;
     EN_cardError_t Test;
     printf("Tester Name : Ibrahim Mohamed \n");
-    printf("Function Name : getCardExpiryDateTest \n");
+    printf("Function Name : getCardExpiryDate \n");
     printf("===========================================\n");
     printf("Test Case 1:NULL\n");
     printf("Input Data:");
@@ -129,7 +129,7 @@ void getCardPANTest(void)
     ST_cardData_t CardData;
     EN_cardError_t Test;
     printf("Tester Name : Ibrahim Mohamed \n");
-    printf("Function Name : getCardPANTest \n");
+    printf("Function Name : getCardPAN \n");
     printf("===========================================\n");
     printf("Test Case 1:NULL\n");
     printf("Input Data:");

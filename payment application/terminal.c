@@ -87,7 +87,7 @@ void isCardExpriedTest(void)
     ST_terminalData_t TermDate;
     EN_terminalError_t Test;
     printf("Tester Name : Ibrahim Mohamed \n");
-    printf("Function Name : isCardExpriedTest \n");
+    printf("Function Name : isCardExpired \n");
     printf("===========================================\n");
     printf("Test Case 1:NULL\n");
     printf("Input Data:");
@@ -122,4 +122,42 @@ void isCardExpriedTest(void)
     printf("Actual Result: %s\n", Test == EXPIRED_CARD ? "EXPIRED_CARD" : "TERMINAL_OK");
 
 }
+EN_terminalError_t getTransactionAmount(ST_terminalData_t *termData)
+{
+    float32 Amount=0;
+    scanf("%f",&Amount);
+    if(termData == NULL || Amount <= 0 ){
+        return INVALID_AMOUNT;
+    }
+    else{
+        termData->transAmount=Amount;
+        return TERMINAL_OK;
+    }
+}
+void getTransactionAmountTest(void)
+{
+    ST_terminalData_t TermDate;
+    EN_terminalError_t Test;
+    printf("Tester Name : Ibrahim Mohamed \n");
+    printf("Function Name : getTransactionAmount \n");
+    printf("===========================================\n");
+    printf("Test Case 1:0\n");
+    printf("Input Data:");
+    Test = getTransactionAmount(&TermDate);
+     printf("Expected Result: INVALID_AMOUNT\n");
+    printf("Actual Result: %s\n", Test == INVALID_AMOUNT ? "INVALID_AMOUNT" : "TERMINAL_OK");
+    printf("===========================================\n");
+    printf("Test Case 2:-100\n");
+    printf("Input Data:");
+    Test=getTransactionAmount(&TermDate);
+     printf("Expected Result: INVALID_AMOUNT\n");
+    printf("Actual Result:%s\n",Test==INVALID_AMOUNT? "INVALID_AMOUNT":"TERMINAL_OK");
+    printf("===========================================\n");
+    printf("Test Case 3:100\n");
+    printf("Input Data:");
+    Test=getTransactionAmount(&TermDate);
+    printf("Expected Result: TERMINAL_OK\n");
+    printf("Actual Result:%s\n",Test==TERMINAL_OK? "TERMINAL_OK":"INVALID_AMOUNT");
+}
+
 
