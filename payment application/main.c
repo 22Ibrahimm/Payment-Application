@@ -11,6 +11,7 @@ int main()
 //getTransactionDateTest();
 //isCardExpriedTest();
 //getTransactionAmountTest();
-isBelowMaxAmountTest();
+//isBelowMaxAmountTest();
+setMaxAmountTest();
     return 0;
 }

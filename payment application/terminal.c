@@ -197,6 +197,41 @@ void isBelowMaxAmountTest(void)
     printf("Expected Result: TERMINAL_OK\n");
     printf("Actual Result:%s\n",Test==TERMINAL_OK? "TERMINAL_OK":"EXCEED_MAX_AMOUNT");
 }
+EN_terminalError_t setMaxAmount(ST_terminalData_t *termData, float32 maxAmount)
+{
+    if(maxAmount<=0 || termData == NULL){
+        return INVALID_MAX_AMOUNT;
+    }
+    else{
+        termData->maxTransAmount=maxAmount;
+        return TERMINAL_OK;
+    }
+}
+void setMaxAmountTest(void)
+{
+    ST_terminalData_t TermDate;
+    EN_terminalError_t Test;
+    printf("Tester Name : Ibrahim Mohamed \n");
+    printf("Function Name : setMaxAmount \n");
+    printf("===========================================\n");
+    printf("Test Case 1:Negative\n");
+    printf("Input Data:");
+    Test=setMaxAmount(&TermDate,-100);
+     printf("Expected Result: INVALID_MAX_AMOUNT\n");
+    printf("Actual Result:%s\n",Test==INVALID_MAX_AMOUNT? "INVALID_MAX_AMOUNT":"TERMINAL_OK");
+    printf("===========================================\n");
+    printf("Test Case 2:zero\n");
+    printf("Input Data:");
+    Test=setMaxAmount(&TermDate,0);
+    printf("Expected Result: INVALID_MAX_AMOUNT\n");
+    printf("Actual Result:%s\n",Test==TERMINAL_OK? "TERMINAL_OK":"INVALID_MAX_AMOUNT");
+    printf("===========================================\n");
+    printf("Test Case 3:positive\n");
+    printf("Input Data:");
+    Test=setMaxAmount(&TermDate,100);
+    printf("Expected Result: TERMINAL_OK\n");
+    printf("Actual Result:%s\n",Test==TERMINAL_OK? "TERMINAL_OK":"INVALID_MAX_AMOUNT");
+}
 
 
 
