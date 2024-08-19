@@ -2,10 +2,12 @@
 #include <stdlib.h>
 #include "platform_types.h"
 #include "card.h"
+#include "terminal.h"
 int main()
 {
 //getCardHolderNameTest();
 //getCardExpiryDateTest();
-getCardPANTest();
+//getCardPANTest();
+getTransactionDateTest();
     return 0;
 }

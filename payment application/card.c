@@ -30,7 +30,7 @@ void getCardHolderNameTest(void)
     ST_cardData_t CardData;
     EN_cardError_t Test;
     printf("Tester Name : Ibrahim Mohamed \n");
-    printf("Function Name : GetCardHolderName \n");
+    printf("Function Name : getCardHolderName \n");
     printf("===========================================\n");
     printf("Test Case 1:NULL\n");
     printf("Input Data:");
