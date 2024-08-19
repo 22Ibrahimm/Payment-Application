@@ -70,11 +70,14 @@ EN_cardError_t getCardExpiryDate(ST_cardData_t *cardData)
             if(date[2] != '/' ||(date[0] =='1' && date[1] > '2')|| date[0] > '1' || (date[3] >'2' && date[4] > '1') ){
                 return WRONG_EXP_DATE;
             }
-            else{
-                return CARD_OK;
-            }
         }
+        for (unit32 i=0;i<5;++i)
+    {
+        cardData->cardExpirationDate[i] = date[i];
     }
+    cardData->cardExpirationDate[strlen(date)] = '\0';
+    }
+    return CARD_OK;
 }
 void getCardExpiryDateTest (void)
 {
@@ -120,9 +123,13 @@ EN_cardError_t getCardPAN(ST_cardData_t *cardData)
          if( cardData == NULL || strlen(CardPAN)>19 || strlen(CardPAN)<16){
             return WRONG_PAN;
         }
-        else{
-            return CARD_OK;
-        }
+       for (unit32 i=0; i<strlen(CardPAN); ++i)
+    {
+        cardData->primaryAccountNumber[i] = CardPAN[i];
+    }
+    cardData->primaryAccountNumber[strlen(CardPAN)] = '\0';
+
+    return CARD_OK;
 }
 void getCardPANTest(void)
 {
@@ -154,5 +161,4 @@ void getCardPANTest(void)
     Test=getCardPAN(&CardData);
     printf("Expected Result: CARD_OK\n");
     printf("Actual Result:%s\n",Test==WRONG_PAN? "WRONG_PAN":"CARD_OK");
-
 }
