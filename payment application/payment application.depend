@@ -1,5 +1,5 @@
 # depslib dependency file v1.0
-1724109818 source:d:\important\payment app\payment-application\payment application\main.c
+1724163898 source:d:\important\payment app\payment-application\payment application\main.c
 	<stdio.h>
 	<stdlib.h>
 	"platform_types.h"
@@ -39,7 +39,7 @@
 
 1723996685 d:\important\payment app\payment-application\payment application\server.h
 
-1724106854 source:d:\important\payment app\payment-application\payment application\terminal.c
+1724170340 source:d:\important\payment app\payment-application\payment application\terminal.c
 	<stdio.h>
 	<stdlib.h>
 	<string.h>
@@ -47,7 +47,7 @@
 	<time.h>
 	"terminal.h"
 
-1724109818 d:\important\payment app\payment-application\payment application\terminal.h
+1724163898 d:\important\payment app\payment-application\payment application\terminal.h
 	"platform_types.h"
 	"card.h"
 

@@ -12,6 +12,7 @@ int main()
 //isCardExpriedTest();
 //getTransactionAmountTest();
 //isBelowMaxAmountTest();
-setMaxAmountTest();
+//setMaxAmountTest();
+isValidCardPANTest();
     return 0;
 }

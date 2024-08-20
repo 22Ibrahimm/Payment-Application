@@ -232,6 +232,61 @@ void setMaxAmountTest(void)
     printf("Expected Result: TERMINAL_OK\n");
     printf("Actual Result:%s\n",Test==TERMINAL_OK? "TERMINAL_OK":"INVALID_MAX_AMOUNT");
 }
+EN_terminalError_t isValidCardPAN(ST_cardData_t *cardData)
+{
+       if(cardData == NULL){
+       return INVALID_CARD;
+    }
+    unit32 OddSum = 0 ;
+    unit32 EvenSum = 0 ;
+    unit32 DoubleEven=0 ;
+    unit32 Length=strlen(cardData->primaryAccountNumber);
+    for(unit32 i = 1 ; i < Length ; i+=2){
+        OddSum+=cardData->primaryAccountNumber[i]-'0';
+    }
+     for(unit32 i = 0 ; i < Length ; i+=2){
+        DoubleEven = (cardData->primaryAccountNumber[i] - '0') * 2;
+        if (DoubleEven > 9) {
+            DoubleEven -= 9;
+        }
+        EvenSum += DoubleEven;
+     }
+     unit32 check=EvenSum+OddSum;
+     if(check % 10 != 0 || check <= 0 ){
+        return INVALID_CARD;
+     }
+     else{
+        return  TERMINAL_OK;
+     }
+}
+void isValidCardPANTest(void)
+{
+    ST_cardData_t CardData;
+    EN_terminalError_t Test;
+    printf("Tester Name : Ibrahim Mohamed \n");
+    printf("Function Name : isValidCardPAN \n");
+    printf("===========================================\n");
+    printf("Test Case 1:NULL\n");
+    printf("Input Data:");
+    getCardPAN(&CardData);
+    Test=isValidCardPAN(&CardData);
+    printf("Expected Result: INVALID_CARD\n");
+    printf("Actual Result:%s\n",Test==INVALID_CARD? "INVALID_CARD":"TERMINAL_OK");
+    printf("===========================================\n");
+    printf("Test Case 2:Not Luhn Number\n");
+    printf("Input Data:");
+    getCardPAN(&CardData);
+    Test=isValidCardPAN(&CardData);
+    printf("Expected Result: INVALID_CARD\n");
+    printf("Actual Result:%s\n",Test==INVALID_CARD? "INVALID_CARD":"TERMINAL_OK");
+    printf("===========================================\n");
+    printf("Test Case 3:Luhn Number\n");
+    printf("Input Data:");
+    getCardPAN(&CardData);
+    Test=isValidCardPAN(&CardData);
+    printf("Expected Result: TERMINAL_OK\n");
+    printf("Actual Result:%s\n",Test==INVALID_CARD? "INVALID_CARD":"TERMINAL_OK");
 
+}
 
 

@@ -26,4 +26,5 @@ void isCardExpriedTest(void);
 void getTransactionAmountTest(void);
 void isBelowMaxAmountTest(void);
 void setMaxAmountTest(void);
+void isValidCardPANTest(void);
 #endif // TERMINAL_H_INCLUDED
