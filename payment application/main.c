@@ -3,6 +3,8 @@
 #include "platform_types.h"
 #include "card.h"
 #include "terminal.h"
+#include "platform_types.h"
+#include "server.h"
 int main()
 {
 //getCardHolderNameTest();
@@ -13,6 +15,8 @@ int main()
 //getTransactionAmountTest();
 //isBelowMaxAmountTest();
 //setMaxAmountTest();
-isValidCardPANTest();
+//isValidCardPANTest();
+ReadToFile("file.txt",accountDB);
+
     return 0;
 }
