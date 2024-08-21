@@ -5,8 +5,11 @@
 #include "terminal.h"
 #include "platform_types.h"
 #include "server.h"
+#include "list.h"
 int main()
 {
+    List l;
+    CreateList(&l);
 //getCardHolderNameTest();
 //getCardExpiryDateTest();
 //getCardPANTest();
@@ -16,7 +19,6 @@ int main()
 //isBelowMaxAmountTest();
 //setMaxAmountTest();
 //isValidCardPANTest();
-ReadToFile("file.txt",accountDB);
-
+ReadToFile("file.txt",&l);
     return 0;
 }

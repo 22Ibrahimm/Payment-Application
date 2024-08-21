@@ -37,9 +37,6 @@ EN_accountState_t state;
 unit8 primaryAccountNumber[20];
 }ST_accountsDB_t;
 
-ST_accountsDB_t accountDB[300];
-
-
 EN_transState_t recieveTransactionData(ST_transaction_t *transData);
 EN_serverError_t isValidAccount(ST_cardData_t *cardData, ST_accountsDB_t*
 accountRefrence);
