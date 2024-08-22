@@ -3,7 +3,7 @@
 #include "platform_types.h"
 #include "card.h"
 #include "terminal.h"
-#include "list.h"
+
 typedef enum EN_transState_t
 {
 APPROVED, DECLINED_INSUFFECIENT_FUND, DECLINED_STOLEN_CARD,
@@ -15,7 +15,7 @@ typedef struct ST_transaction_t
 ST_cardData_t cardHolderData;
 ST_terminalData_t terminalData;
 EN_transState_t transState;
-uint32_t transactionSequenceNumber;
+unit32 transactionSequenceNumber;
 }ST_transaction_t;
 
 typedef enum EN_serverError_t
@@ -30,22 +30,21 @@ RUNNING,
 BLOCKED
 }EN_accountState_t;
 
-
 typedef struct ST_accountsDB_t
 {
 float32 balance;
 EN_accountState_t state;
-uint8_t primaryAccountNumber[20];
+unit8 primaryAccountNumber[20];
 }ST_accountsDB_t;
 
 EN_transState_t recieveTransactionData(ST_transaction_t *transData);
-EN_serverError_t isValidAccount(ST_cardData_t *cardData, ST_accountsDB_t **accountReference,List *pl);
+EN_serverError_t isValidAccount(ST_cardData_t *cardData, ST_accountsDB_t*
+accountRefrence);
 EN_serverError_t isBlockedAccount(ST_accountsDB_t *accountRefrence);
 EN_serverError_t isAmountAvailable(ST_terminalData_t *termData,
 ST_accountsDB_t* accountRefrence);
 EN_serverError_t saveTransaction(ST_transaction_t *transData);
 void listSavedTransactions(void);
-void isValidAccountTest(void);
 
 
 

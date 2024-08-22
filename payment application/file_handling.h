@@ -4,7 +4,7 @@
 #include "server.h"
 #include "list.h"
 
-int32_t ReadToFile(const uint8_t* FileName , List *pl);
+void ReadToFile( const unit8* FileName , List *pl);
 
 
 #endif // FILE_HANDLING_H_INCLUDED

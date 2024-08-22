@@ -2,12 +2,11 @@
 #define TERMINAL_H_INCLUDED
 #include "platform_types.h"
 #include "card.h"
-
 typedef struct ST_terminalData_t
 {
 float32 transAmount;
 float32 maxTransAmount;
-uint8_t transactionDate[11];
+unit8 transactionDate[11];
 }ST_terminalData_t;
 
 typedef enum EN_terminalError_t

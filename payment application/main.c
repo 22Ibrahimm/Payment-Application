@@ -8,6 +8,8 @@
 #include "list.h"
 int main()
 {
+    List l;
+    CreateList(&l);
 //getCardHolderNameTest();
 //getCardExpiryDateTest();
 //getCardPANTest();
@@ -17,9 +19,6 @@ int main()
 //isBelowMaxAmountTest();
 //setMaxAmountTest();
 //isValidCardPANTest();
-//readAccountsFromFile("file.txt",&l);
-//DisplayList(&l, printAccount);
-
-isValidAccountTest();
+ReadToFile("file.txt",&l);
     return 0;
 }

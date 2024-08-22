@@ -4,16 +4,15 @@
 #include <ctype.h>
 #include <time.h>
 #include "terminal.h"
-
 EN_terminalError_t getTransactionDate(ST_terminalData_t *termData)
 {
-    uint8_t Date[15]={};
+    unit8 Date[15]={};
     gets(Date);
     if(termData == NULL || strlen(Date)!=10 || Date[2]!='/' || Date[5]!='/'  || (Date[3]=='1' && Date[4]>'2')){
         return WRONG_DATE;
     }
     else{
-         for(uint32_t i=0;i<strlen(Date);++i){
+         for(unit32 i=0;i<strlen(Date);++i){
              termData->transactionDate[i]=Date[i];
          }
          termData->transactionDate[strlen(Date)]='\0';
@@ -235,37 +234,31 @@ void setMaxAmountTest(void)
 }
 EN_terminalError_t isValidCardPAN(ST_cardData_t *cardData)
 {
-    if (cardData == NULL) {
-        return INVALID_CARD;
+       if(cardData == NULL){
+       return INVALID_CARD;
     }
-
-    uint32_t OddSum = 0;
-    uint32_t EvenSum = 0;
-    uint32_t DoubleEven = 0;
-    int32_t Length = strlen(cardData->primaryAccountNumber);
-
-    for (int32_t i = Length - 1; i >= 0; i--) {
-        uint32_t digit = cardData->primaryAccountNumber[i] - '0';
-
-        if ((Length - i) % 2 == 0) {
-            DoubleEven = digit * 2;
-            if (DoubleEven > 9) {
-                DoubleEven -= 9;
-            }
-            EvenSum += DoubleEven;
-        } else {
-            OddSum += digit;
+    unit32 OddSum = 0 ;
+    unit32 EvenSum = 0 ;
+    unit32 DoubleEven=0 ;
+    unit32 Length=strlen(cardData->primaryAccountNumber);
+    for(unit32 i = 1 ; i < Length ; i+=2){
+        OddSum+=cardData->primaryAccountNumber[i]-'0';
+    }
+     for(unit32 i = 0 ; i < Length ; i+=2){
+        DoubleEven = (cardData->primaryAccountNumber[i] - '0') * 2;
+        if (DoubleEven > 9) {
+            DoubleEven -= 9;
         }
-    }
-
-    uint32_t check = EvenSum + OddSum;
-    if (check % 10 != 0 || check <= 0) {
+        EvenSum += DoubleEven;
+     }
+     unit32 check=EvenSum+OddSum;
+     if(check % 10 != 0 || check <= 0 ){
         return INVALID_CARD;
-    } else {
-        return TERMINAL_OK;
-    }
+     }
+     else{
+        return  TERMINAL_OK;
+     }
 }
-
 void isValidCardPANTest(void)
 {
     ST_cardData_t CardData;
@@ -275,7 +268,8 @@ void isValidCardPANTest(void)
     printf("===========================================\n");
     printf("Test Case 1:NULL\n");
     printf("Input Data:");
-    Test=isValidCardPAN(NULL);
+    getCardPAN(&CardData);
+    Test=isValidCardPAN(&CardData);
     printf("Expected Result: INVALID_CARD\n");
     printf("Actual Result:%s\n",Test==INVALID_CARD? "INVALID_CARD":"TERMINAL_OK");
     printf("===========================================\n");
