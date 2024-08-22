@@ -5,20 +5,20 @@
 #include "card.h"
 EN_cardError_t getCardHolderName (ST_cardData_t *cardData)
 {
-    unit8 name[27]={};
+    uint8_t name[27]={};
     gets(name);
     if( cardData == NULL || strlen(name)>24 || strlen(name)<20){
         return WRONG_NAME;
     }
     else{
-        unit32 cnt;
-        for(cnt=0;cnt<strlen(name);++cnt){
-            if(!isalpha(name[cnt])&&name[cnt]!=' '){
+        uint32_t i;
+        for(i=0;i<strlen(name);++i){
+            if(!isalpha(name[i])&&name[i]!=' '){
                 return WRONG_NAME;
             }
         }
     }
-    for (unit32 i=0;i<strlen(name);++i)
+    for (uint32_t i=0;i<strlen(name);++i)
     {
         cardData->cardHolderName[i] = name[i];
     }
@@ -59,19 +59,19 @@ void getCardHolderNameTest(void)
 }
 EN_cardError_t getCardExpiryDate(ST_cardData_t *cardData)
 {
-    unit8 date[7]={};
+    uint8_t date[7]={};
     gets(date);
     if( cardData == NULL || strlen(date) != 5){
         return WRONG_EXP_DATE;
     }
     else{
-        unit32 i=0;
+        uint32_t i=0;
         for(i=0;i<strlen(date);++i){
             if(date[2] != '/' ||(date[0] =='1' && date[1] > '2')|| date[0] > '1' ){
                 return WRONG_EXP_DATE;
             }
         }
-        for (unit32 i=0;i<5;++i){
+        for (uint32_t i=0;i<5;++i){
         cardData->cardExpirationDate[i] = date[i];
     }
     cardData->cardExpirationDate[strlen(date)] = '\0';
@@ -111,12 +111,12 @@ void getCardExpiryDateTest (void)
 }
 EN_cardError_t getCardPAN(ST_cardData_t *cardData)
 {
-    unit8 CardPAN[25]={};
+    uint8_t CardPAN[25]={};
         gets(CardPAN);
          if( cardData == NULL || strlen(CardPAN)>19 || strlen(CardPAN)<16){
             return WRONG_PAN;
         }
-       for (unit32 i=0; i<strlen(CardPAN); ++i)
+       for (uint32_t i=0; i<strlen(CardPAN); ++i)
     {
         cardData->primaryAccountNumber[i] = CardPAN[i];
     }

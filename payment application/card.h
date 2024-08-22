@@ -4,9 +4,9 @@
 
 typedef struct ST_cardData_t
 {
-unit8 cardHolderName[25];
-unit8 primaryAccountNumber[20];
-unit8 cardExpirationDate[6];
+uint8_t cardHolderName[25];
+uint8_t primaryAccountNumber[20];
+uint8_t cardExpirationDate[6];
 }ST_cardData_t;
 
 typedef enum EN_cardError_t
@@ -20,6 +20,5 @@ EN_cardError_t getCardPAN(ST_cardData_t *cardData);
 void getCardHolderNameTest(void);
 void getCardExpiryDateTest (void);
 void getCardPANTest(void);
-
 
 #endif // CARD_H_INCLUDED
