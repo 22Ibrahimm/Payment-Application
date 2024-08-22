@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "list.h"
-unit32 CreateList(List *pl)
+int32_t CreateList(List *pl)
 {
     if(pl==NULL){
         return -1;
@@ -12,20 +12,20 @@ unit32 CreateList(List *pl)
     return 1;
     }
 }
-void insertAccount(unit32 pos, ST_accountsDB_t account, List *pl)
+int32_t insertAccount(uint32_t pos, void *account , List *pl)
 {
     if(pl==NULL){
         return -1;
     }
 
     ListNode *p, *q;
-    unit32 i;
+    uint32_t i;
 
     p = (ListNode *)malloc(sizeof(ListNode));
     if (p == NULL) {
         return -1;
     }
-    p->accountDB = account;
+    p->ptr = account;
     p->next = NULL;
     if (pos == 0) {
         p->next = pl->head;
@@ -41,7 +41,7 @@ void insertAccount(unit32 pos, ST_accountsDB_t account, List *pl)
     pl->size++;
     return 1;
 }
-unit32 DisplayList(List *pl, void (*pf)(ST_accountsDB_t))
+int32_t DisplayList(List *pl, void (*pf)(void *))
 {
     if (pl == NULL || pf == NULL) {
         return -1;
@@ -54,13 +54,13 @@ unit32 DisplayList(List *pl, void (*pf)(ST_accountsDB_t))
     }
 
     while (p) {
-        (*pf)(p->accountDB);
+        (*pf)(p->ptr);
         p = p->next;
     }
 
     return 1;
 }
-unit32 ListSize(List *pl)
+int32_t ListSize(List *pl)
 {
 if(pl==NULL){
     return -1;
@@ -69,3 +69,4 @@ else{
     return pl->size;
 }
 }
+
