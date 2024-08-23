@@ -91,19 +91,19 @@ void isBlockedAccountTest(void) {
     printf("Expected Result: BLOCKED_ACCOUNT\n");
     printf("Actual Result: %s\n", Result == BLOCKED_ACCOUNT ? "BLOCKED_ACCOUNT" : "SERVER_OK");
     printf("===========================================\n");
+    strcpy(account.primaryAccountNumber, "33876543210987654");
     printf("Test Case 2: Account is Running\n");
     printf("Input Data: \n");
-     ListNode *node = l.head;
-    while (node != NULL) {
-        ST_accountsDB_t *account = (ST_accountsDB_t *)node->ptr;
-        if (account->state == 0) {
-            Result = isBlockedAccount(account,&l);
-            printf("Expected Result: SERVER_OK\n");
-            printf("Actual Result: %s\n", Result == SERVER_OK ? "SERVER_OK" : "BLOCKED_ACCOUNT");
-            break;
-        }
-        node = node->next;
-    }
+    Result = isBlockedAccount(&account,&l);
+    printf("Expected Result: SERVER_OK\n");
+    printf("Actual Result: %s\n", Result == SERVER_OK ? "SERVER_OK" : "BLOCKED_ACCOUNT");
+    printf("===========================================\n");
+    strcpy(account.primaryAccountNumber, "11876543210987654");
+    printf("Test Case 3: Account is blocked\n");
+    printf("Input Data: \n");
+    Result = isBlockedAccount(&account,&l);
+    printf("Expected Result: BLOCKED_ACCOUNT\n");
+    printf("Actual Result: %s\n", Result == SERVER_OK ? "SERVER_OK" : "BLOCKED_ACCOUNT");
     printf("===========================================\n");
 }
 EN_serverError_t isAmountAvailable(ST_terminalData_t *termData, ST_accountsDB_t *accountReference, List *pl) {
