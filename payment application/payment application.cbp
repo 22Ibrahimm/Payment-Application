@@ -31,9 +31,34 @@
 		<Compiler>
 			<Add option="-Wall" />
 		</Compiler>
+		<Unit filename="app.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="app.h" />
+		<Unit filename="card.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="card.h" />
+		<Unit filename="file_handling.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="file_handling.h" />
+		<Unit filename="list.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="list.h" />
 		<Unit filename="main.c">
 			<Option compilerVar="CC" />
 		</Unit>
+		<Unit filename="platform_types.h" />
+		<Unit filename="server.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="server.h" />
+		<Unit filename="terminal.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="terminal.h" />
 		<Extensions>
 			<lib_finder disable_auto="1" />
 		</Extensions>

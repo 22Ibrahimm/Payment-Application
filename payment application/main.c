@@ -19,7 +19,7 @@ int main()
 //isValidCardPANTest();
 //readAccountsFromFile("file.txt",&l);
 //DisplayList(&l, printAccount);
-
-isValidAccountTest();
+isBlockedAccountTest();
+//isValidAccountTest();
     return 0;
 }
