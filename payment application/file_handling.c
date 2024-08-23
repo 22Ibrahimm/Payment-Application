@@ -37,4 +37,30 @@ int32_t  ReadToFile(const uint8_t* FileName , List *pl)
     fclose(My_file);
     return 1;
 }
+int32_t ReadTransactionsFromFile(const uint8_t *FileName, ST_transaction_t *transactions) {
+    FILE *transaction = NULL;
+    transaction = fopen((const char *)FileName, "r");
+    if (transaction == NULL) {
+        printf("Error opening file!\n");
+        return -1;
+    }
+
+    uint32_t i = 0;
+    while (fscanf(transaction,
+                  "%49s %19s %7s %10s %f %f %d %u\n",
+                  transactions[i].cardHolderData.cardHolderName,
+                  transactions[i].cardHolderData.primaryAccountNumber,
+                  transactions[i].cardHolderData.cardExpirationDate,
+                  transactions[i].terminalData.transactionDate,
+                  &transactions[i].terminalData.transAmount,
+                  &transactions[i].terminalData.maxTransAmount,
+                  (int32_t *)&transactions[i].transState,
+                  &transactions[i].transactionSequenceNumber) != EOF) {
+        i++;
+        if (i >= 300) break;
+    }
+
+    fclose(transaction);
+    return i;
+}
 
