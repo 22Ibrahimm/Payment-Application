@@ -106,4 +106,55 @@ void isBlockedAccountTest(void) {
     }
     printf("===========================================\n");
 }
+EN_serverError_t isAmountAvailable(ST_terminalData_t *termData, ST_accountsDB_t *accountReference, List *pl) {
+    if (termData == NULL || accountReference == NULL || pl == NULL) {
+        return LOW_BALANCE;
+    }
+    ListNode *currentNode = pl->head;
+    while (currentNode != NULL) {
+        ST_accountsDB_t *account = (ST_accountsDB_t*)currentNode->ptr;
+        if (strcmp(account->primaryAccountNumber, accountReference->primaryAccountNumber) == 0) {
+        return termData->transAmount > account->balance ? LOW_BALANCE : SERVER_OK;
+        }
+        currentNode = currentNode->next;
+    }
 
+    return LOW_BALANCE;
+}
+void isAmountAvailableTest(void) {
+    EN_serverError_t result;
+    ST_terminalData_t termData;
+    ST_accountsDB_t account;
+    List l;
+
+    CreateList(&l);
+    ReadToFile("file.txt", &l);
+
+    printf("Tester Name : Ibrahim Mohamed \n");
+    printf("Function Name : isAmountAvailable \n");
+    printf("===========================================\n");
+
+    strcpy(account.primaryAccountNumber, "22876543210987654");
+
+    printf("Test Case 1:More than balance\n");
+    printf("Input Data:");
+     getTransactionAmount(&termData);
+    result = isAmountAvailable(&termData, &account, &l);
+
+    printf("Expected Result: LOW_BALANCE \n");
+    printf("Actual Result: %s\n", result == SERVER_OK ? "SERVER_OK" : "LOW_BALANCE");
+    printf("===========================================\n");
+
+    printf("===========================================\n");
+
+    strcpy(account.primaryAccountNumber, "22876543210987654");
+
+    printf("Test Case 2:Less than balance\n");
+    printf("Input Data:");
+     getTransactionAmount(&termData);
+    result = isAmountAvailable(&termData, &account, &l);
+
+    printf("Expected Result: SERVER_OK \n");
+    printf("Actual Result: %s\n", result == SERVER_OK ? "SERVER_OK" : "LOW_BALANCE");
+    printf("===========================================\n");
+}
