@@ -49,9 +49,9 @@ int main()
 //isValidAccountTest();
 //isBlockedAccountTest();
 //isAmountAvailableTest();
-//listSavedTransactionsTest();
+listSavedTransactions();
 //recieveTransactionDataTest();
-saveTransactionTest();
+//saveTransactionTest();
 //uint32_t res=ReadTransactionsFromFile("transaction.txt",transaction_DB);
 //PrintAllTransactions(transaction_DB,res);
 //printf("%i\n",res);

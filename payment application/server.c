@@ -206,8 +206,6 @@ EN_serverError_t saveTransaction(ST_transaction_t *transData) {
         return SAVING_FAILED;
     }
 
-    transData->transactionSequenceNumber = transaction_count + 1;
-
     strcpy(transaction_DB[transaction_count].cardHolderData.cardHolderName, transData->cardHolderData.cardHolderName);
     strcpy(transaction_DB[transaction_count].cardHolderData.cardExpirationDate, transData->cardHolderData.cardExpirationDate);
     strcpy(transaction_DB[transaction_count].cardHolderData.primaryAccountNumber, transData->cardHolderData.primaryAccountNumber);
@@ -215,7 +213,7 @@ EN_serverError_t saveTransaction(ST_transaction_t *transData) {
     transaction_DB[transaction_count].terminalData.transAmount = transData->terminalData.transAmount;
     transaction_DB[transaction_count].terminalData.maxTransAmount = transData->terminalData.maxTransAmount;
     transaction_DB[transaction_count].transState = transData->transState;
-
+     transData->transactionSequenceNumber = transaction_count + 1;
     if (SaveTransactionsToFile("transaction.txt", transaction_DB, transaction_count + 1) != 0) {
         printf("SAVING_FAILED\n");
         return SAVING_FAILED;
@@ -228,6 +226,7 @@ EN_serverError_t saveTransaction(ST_transaction_t *transData) {
 
 void saveTransactionTest(void) {
     ST_transaction_t data;
+    int32_t transaction_count = ReadTransactionsFromFile("transaction.txt", transaction_DB);
     strcpy(data.cardHolderData.cardHolderName, "AhmedNgySoliman");
     strcpy(data.cardHolderData.primaryAccountNumber, "1234567890123456");
     strcpy(data.cardHolderData.cardExpirationDate, "12/25");
@@ -235,7 +234,7 @@ void saveTransactionTest(void) {
     data.terminalData.transAmount = 100.00;
     data.terminalData.maxTransAmount = 500.00;
     data.transState = DECLINED_STOLEN_CARD;
-
+    data.transactionSequenceNumber=transaction_count+1;
     printf("Tester Name : Ibrahim Mohamed\n");
     printf("Function Name : saveTransaction\n");
 
@@ -248,5 +247,21 @@ void saveTransactionTest(void) {
     EN_serverError_t result = saveTransaction(&data);
     printf("Actual Result: %s\n", result == SERVER_OK ? "SERVER_OK" : "SAVING_FAILED");
 }
+void listSavedTransactions(void) {
 
+     int32_t transaction_count = ReadTransactionsFromFile("transaction.txt", transaction_DB);
+
+    for (int32_t i = 0; i < transaction_count; i++) {
+        printf("#########################\n");
+        printf("Transaction Sequence Number: %u\n", transaction_DB[i].transactionSequenceNumber);
+        printf("Transaction Date: %s\n", transaction_DB[i].terminalData.transactionDate);
+        printf("Transaction Amount: %.2f\n", transaction_DB[i].terminalData.transAmount);
+        printf("Transaction State: %s\n", mapTransStateToString(transaction_DB[i].transState));
+        printf("Terminal Max Amount: %.2f\n", transaction_DB[i].terminalData.maxTransAmount);
+        printf("Cardholder Name: %s\n", transaction_DB[i].cardHolderData.cardHolderName);
+        printf("PAN: %s\n", transaction_DB[i].cardHolderData.primaryAccountNumber);
+        printf("Card Expiration Date: %s\n", transaction_DB[i].cardHolderData.cardExpirationDate);
+        printf("#########################\n");
+    }
+}
 
