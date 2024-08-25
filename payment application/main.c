@@ -6,10 +6,35 @@
 #include "platform_types.h"
 #include "server.h"
 #include "list.h"
-ST_transaction_t transaction_DB[300];
-
+/*void PrintAccount(void *data) {
+    ST_accountsDB_t *account = (ST_accountsDB_t *)data;
+    printf("Balance: %.2f\n", account->balance);
+    printf("PAN: %s\n", account->primaryAccountNumber);
+    printf("State: %s\n", account->state == 0 ? "RUNNING" : "BLOCKED");
+    printf("-------------------------------------------\n");
+}*/
+/*void PrintTransaction(ST_transaction_t *transaction) {
+    printf("Card Holder Name: %s\n", transaction->cardHolderData.cardHolderName);
+    printf("Primary Account Number: %s\n", transaction->cardHolderData.primaryAccountNumber);
+    printf("Card Expiration Date: %s\n", transaction->cardHolderData.cardExpirationDate);
+    printf("Transaction Date: %s\n", transaction->terminalData.transactionDate);
+    printf("Transaction Amount: %.2f\n", transaction->terminalData.transAmount);
+    printf("Max Transaction Amount: %.2f\n", transaction->terminalData.maxTransAmount);
+    printf("Transaction State: %d\n", transaction->transState);
+    printf("Transaction Sequence Number: %u\n", transaction->transactionSequenceNumber);
+    printf("===========================================\n");
+}
+void PrintAllTransactions(ST_transaction_t *transactions, int32_t count) {
+    for (int32_t i = 0; i < count; i++) {
+        PrintTransaction(&transactions[i]);
+    }
+}*/
 int main()
 {
+//List l;
+//CreateList(&l);
+//ReadToFile("file.txt", &l);
+
 //getCardHolderNameTest();
 //getCardExpiryDateTest();
 //getCardPANTest();
@@ -20,23 +45,15 @@ int main()
 //setMaxAmountTest();
 //isValidCardPANTest();
 //readAccountsFromFile("file.txt",&l);
-//DisplayList(&l, printAccount);
-//isBlockedAccountTest();
+//DisplayList(&l, PrintAccount);
 //isValidAccountTest();
-// isAmountAvailableTest();
-
-uint32_t resutlt =ReadTransactionsFromFile("transaction.txt",transaction_DB);
- for (int i = 0; i < resutlt; i++) {
-        printf("Card Holder Name: %s\n", transaction_DB[i].cardHolderData.cardHolderName);
-        printf("Primary Account Number: %s\n", transaction_DB[i].cardHolderData.primaryAccountNumber);
-        printf("Card Expiration Date: %s\n", transaction_DB[i].cardHolderData.cardExpirationDate);
-        printf("Transaction Date: %s\n", transaction_DB[i].terminalData.transactionDate);
-        printf("Transaction Amount: %.2f\n", transaction_DB[i].terminalData.transAmount);
-        printf("Max Transaction Amount: %.2f\n", transaction_DB[i].terminalData.maxTransAmount);
-        printf("Transaction State: %d\n", transaction_DB[i].transState);
-        printf("Sequence Number: %u\n", transaction_DB[i].transactionSequenceNumber);
-
-    }
-
+//isBlockedAccountTest();
+//isAmountAvailableTest();
+//listSavedTransactionsTest();
+//recieveTransactionDataTest();
+saveTransactionTest();
+//uint32_t res=ReadTransactionsFromFile("transaction.txt",transaction_DB);
+//PrintAllTransactions(transaction_DB,res);
+//printf("%i\n",res);
     return 0;
 }

@@ -2,28 +2,9 @@
 <CodeBlocks_layout_file>
 	<FileVersion major="1" minor="0" />
 	<ActiveTarget name="Debug" />
-	<File name="list.c" open="1" top="0" tabpos="5" split="0" active="1" splitpos="0" zoom_1="3" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="60" topLine="0" />
-		</Cursor>
-		<Folding>
-			<Collapse line="4" />
-			<Collapse line="15" />
-			<Collapse line="44" />
-			<Collapse line="63" />
-		</Folding>
-	</File>
-	<File name="file_handling.c" open="1" top="0" tabpos="10" split="0" active="1" splitpos="0" zoom_1="1" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="669" topLine="0" />
-		</Cursor>
-		<Folding>
-			<Collapse line="5" />
-		</Folding>
-	</File>
 	<File name="card.c" open="1" top="0" tabpos="8" split="0" active="1" splitpos="0" zoom_1="3" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="4124" topLine="0" />
+			<Cursor1 position="1520" topLine="0" />
 		</Cursor>
 		<Folding>
 			<Collapse line="6" />
@@ -34,43 +15,58 @@
 			<Collapse line="127" />
 		</Folding>
 	</File>
-	<File name="main.c" open="1" top="0" tabpos="1" split="0" active="1" splitpos="0" zoom_1="4" zoom_2="0">
+	<File name="platform_types.h" open="1" top="0" tabpos="12" split="0" active="1" splitpos="0" zoom_1="1" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="529" topLine="4" />
+			<Cursor1 position="517" topLine="18" />
 		</Cursor>
 	</File>
-	<File name="server.c" open="1" top="1" tabpos="3" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+	<File name="list.c" open="1" top="0" tabpos="5" split="0" active="1" splitpos="0" zoom_1="3" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="103" topLine="0" />
+			<Cursor1 position="486" topLine="15" />
 		</Cursor>
 		<Folding>
-			<Collapse line="25" />
-			<Collapse line="61" />
+			<Collapse line="44" />
+			<Collapse line="63" />
 		</Folding>
 	</File>
-	<File name="terminal.h" open="1" top="0" tabpos="7" split="0" active="1" splitpos="0" zoom_1="2" zoom_2="0">
+	<File name="main.c" open="1" top="1" tabpos="1" split="0" active="1" splitpos="0" zoom_1="3" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="197" topLine="0" />
+			<Cursor1 position="623" topLine="15" />
 		</Cursor>
 	</File>
-	<File name="list.h" open="1" top="0" tabpos="4" split="0" active="1" splitpos="0" zoom_1="2" zoom_2="0">
+	<File name="file_handling.h" open="1" top="0" tabpos="10" split="0" active="1" splitpos="0" zoom_1="3" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="155" topLine="5" />
+			<Cursor1 position="288" topLine="0" />
 		</Cursor>
 	</File>
-	<File name="server.h" open="1" top="0" tabpos="2" split="0" active="1" splitpos="0" zoom_1="4" zoom_2="0">
+	<File name="terminal.h" open="1" top="0" tabpos="7" split="0" active="1" splitpos="0" zoom_1="5" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="1107" topLine="34" />
+			<Cursor1 position="839" topLine="0" />
 		</Cursor>
 	</File>
-	<File name="file_handling.h" open="1" top="0" tabpos="11" split="0" active="1" splitpos="0" zoom_1="3" zoom_2="0">
+	<File name="list.h" open="1" top="0" tabpos="4" split="0" active="1" splitpos="0" zoom_1="6" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="146" topLine="0" />
+			<Cursor1 position="117" topLine="0" />
+		</Cursor>
+	</File>
+	<File name="server.h" open="1" top="0" tabpos="2" split="0" active="1" splitpos="0" zoom_1="2" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="1143" topLine="0" />
+		</Cursor>
+	</File>
+	<File name="file_handling.c" open="1" top="0" tabpos="11" split="0" active="1" splitpos="0" zoom_1="2" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="2300" topLine="33" />
+		</Cursor>
+	</File>
+	<File name="card.h" open="1" top="0" tabpos="9" split="0" active="1" splitpos="0" zoom_1="4" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="185" topLine="0" />
 		</Cursor>
 	</File>
 	<File name="terminal.c" open="1" top="0" tabpos="6" split="0" active="1" splitpos="0" zoom_1="3" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="8313" topLine="11" />
+			<Cursor1 position="221" topLine="2" />
 		</Cursor>
 		<Folding>
 			<Collapse line="8" />
@@ -87,14 +83,9 @@
 			<Collapse line="269" />
 		</Folding>
 	</File>
-	<File name="card.h" open="1" top="0" tabpos="9" split="0" active="1" splitpos="0" zoom_1="3" zoom_2="0">
+	<File name="server.c" open="1" top="0" tabpos="3" split="0" active="1" splitpos="0" zoom_1="4" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="185" topLine="0" />
-		</Cursor>
-	</File>
-	<File name="platform_types.h" open="1" top="0" tabpos="12" split="0" active="1" splitpos="0" zoom_1="3" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="517" topLine="18" />
+			<Cursor1 position="140" topLine="234" />
 		</Cursor>
 	</File>
 </CodeBlocks_layout_file>
