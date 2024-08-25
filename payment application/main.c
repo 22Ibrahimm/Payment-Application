@@ -13,7 +13,7 @@
     printf("State: %s\n", account->state == 0 ? "RUNNING" : "BLOCKED");
     printf("-------------------------------------------\n");
 }*/
-/*void PrintTransaction(ST_transaction_t *transaction) {
+void PrintTransaction(ST_transaction_t *transaction) {
     printf("Card Holder Name: %s\n", transaction->cardHolderData.cardHolderName);
     printf("Primary Account Number: %s\n", transaction->cardHolderData.primaryAccountNumber);
     printf("Card Expiration Date: %s\n", transaction->cardHolderData.cardExpirationDate);
@@ -28,7 +28,7 @@ void PrintAllTransactions(ST_transaction_t *transactions, int32_t count) {
     for (int32_t i = 0; i < count; i++) {
         PrintTransaction(&transactions[i]);
     }
-}*/
+}
 int main()
 {
 //List l;
@@ -49,11 +49,12 @@ int main()
 //isValidAccountTest();
 //isBlockedAccountTest();
 //isAmountAvailableTest();
-listSavedTransactions();
+//listSavedTransactions();
 //recieveTransactionDataTest();
 //saveTransactionTest();
-//uint32_t res=ReadTransactionsFromFile("transaction.txt",transaction_DB);
-//PrintAllTransactions(transaction_DB,res);
+uint32_t res=ReadTransactionsFromFile("transaction.txt",transaction_DB);
+PrintAllTransactions(transaction_DB,res);
 //printf("%i\n",res);
+//recieveTransactionDataTest();
     return 0;
 }

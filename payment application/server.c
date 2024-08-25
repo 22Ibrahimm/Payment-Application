@@ -264,4 +264,92 @@ void listSavedTransactions(void) {
         printf("#########################\n");
     }
 }
+EN_serverError_t recieveTransactionData(ST_transaction_t *transData, List *accountsList) {
+    if (transData == NULL || accountsList == NULL) {
+        return INTERNAL_SERVER_ERROR;
+    }
 
+    ST_accountsDB_t *account = NULL;
+    ListNode *currentNode = accountsList->head;
+
+    while (currentNode != NULL) {
+        ST_accountsDB_t *currentAccount = (ST_accountsDB_t *)currentNode->ptr;
+
+        if (strcmp(transData->cardHolderData.primaryAccountNumber, currentAccount->primaryAccountNumber) == 0) {
+            account = currentAccount;
+            break;
+        }
+        currentNode = currentNode->next;
+    }
+
+    if (account == NULL) {
+        printf("Actual Result : FRAUD_CARD\n");
+        return FRAUD_CARD;
+    }
+
+    if (isBlockedAccount(account) == BLOCKED_ACCOUNT) {
+        printf("Actual Result : DECLINED_STOLEN_CARD\n");
+        return DECLINED_STOLEN_CARD;
+    }
+
+    if (isAmountAvailable(&transData->terminalData, account) == LOW_BALANCE) {
+        printf("Actual Result : DECLINED_INSUFFECIENT_FUND\n");
+        return DECLINED_INSUFFECIENT_FUND;
+    }
+
+    account->balance -= transData->terminalData.transAmount;
+
+    EN_serverError_t saveResult = saveTransaction(transData);
+    if (saveResult != SERVER_OK) {
+        printf("Actual Result : INTERNAL_SERVER_ERROR\n");
+        return INTERNAL_SERVER_ERROR;
+    }
+
+    printf("Actual Result : APPROVED\n");
+    return APPROVED;
+}
+
+
+
+void recieveTransactionDataTest(void) {
+    ST_transaction_t data;
+    ST_cardData_t card;
+    List l;
+    CreateList(&l);
+
+    ReadToFile("file.txt", &l);
+   ReadTransactionsFromFile("transaction.txt", transaction_DB);
+    printf("Tester Name : Ibrahim Mohamed\n");
+    printf("Function Name : recieveTransactionData\n");
+
+    printf("Test Case 1: APPROVED\nExpected Result: APPROVED\nInput Data:\n");
+    printf("Enter Card PAN: 12345678912345678\n");
+    strcpy(data.cardHolderData.primaryAccountNumber, "12345678912345678");
+    printf("Enter Transaction Amount: 100\n");
+    data.terminalData.transAmount = 100;
+    EN_serverError_t result = recieveTransactionData(&data, &l);
+    printf("Actual Result : %d\n", result);
+
+    printf("\n\nTest Case 2: INSUFFICIENT FUND\nExpected Result: DECLINED_INSUFFECIENT_FUND\nInput Data:\n");
+    printf("Enter Card PAN: 12345678912345678\n");
+    strcpy(data.cardHolderData.primaryAccountNumber, "12345678912345678");
+    printf("Enter Transaction Amount: 10000\n");
+    data.terminalData.transAmount = 10000.00;
+    result = recieveTransactionData(&data, &l);
+    printf("Actual Result : %d\n", result);
+    printf("\n\nTest Case 3: STOLEN\nExpected Result: DECLINED_STOLEN_CARD\nInput Data:\n");
+    printf("Enter Card PAN: 22876543210987654\n");
+    strcpy(data.cardHolderData.primaryAccountNumber, "22876543210987654");
+    data.terminalData.transAmount = 50;
+    result = recieveTransactionData(&data, &l);
+    printf("Actual Result : %d\n", result);
+
+    printf("\n\nTest Case 4: FRAUD\nExpected Result: FRAUD_CARD\nInput Data:\n");
+    printf("Enter Card PAN: 1111222233334444\n");
+    strcpy(data.cardHolderData.primaryAccountNumber, "1111222233334444");
+    data.terminalData.transAmount = 50;
+    result = recieveTransactionData(&data, &l);
+    printf("Actual Result : %d\n", result);
+
+
+}

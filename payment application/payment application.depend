@@ -102,7 +102,7 @@
 	"server.h"
 	"list.h"
 
-1724609058 c:\users\doc\desktop\new folder (6)\payment appliction\payment-application\payment application\server.h
+1724618872 c:\users\doc\desktop\new folder (6)\payment appliction\payment-application\payment application\server.h
 	"platform_types.h"
 	"card.h"
 	"terminal.h"
@@ -120,7 +120,7 @@
 	<stdlib.h>
 	"list.h"
 
-1724616025 source:c:\users\doc\desktop\new folder (6)\payment appliction\payment-application\payment application\main.c
+1724624330 source:c:\users\doc\desktop\new folder (6)\payment appliction\payment-application\payment application\main.c
 	<stdio.h>
 	<stdlib.h>
 	"platform_types.h"
@@ -130,7 +130,7 @@
 	"server.h"
 	"list.h"
 
-1724617291 source:c:\users\doc\desktop\new folder (6)\payment appliction\payment-application\payment application\server.c
+1724625285 source:c:\users\doc\desktop\new folder (6)\payment appliction\payment-application\payment application\server.c
 	<stdio.h>
 	<stdlib.h>
 	<string.h>
