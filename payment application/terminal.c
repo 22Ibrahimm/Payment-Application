@@ -8,7 +8,9 @@
 EN_terminalError_t getTransactionDate(ST_terminalData_t *termData)
 {
     uint8_t Date[15]={};
+    printf("Enter Transaction Date: ");
     gets(Date);
+    fflush(stdin);
     if(termData == NULL || strlen(Date)!=10 || Date[2]!='/' || Date[5]!='/'  || (Date[3]=='1' && Date[4]>'2')){
         return WRONG_DATE;
     }
@@ -126,7 +128,9 @@ void isCardExpriedTest(void)
 EN_terminalError_t getTransactionAmount(ST_terminalData_t *termData)
 {
     float32 Amount=0;
+    printf("Enter Transction Amount: ");
     scanf("%f",&Amount);
+    fflush(stdin);
     if(termData == NULL || Amount <= 0 ){
         return INVALID_AMOUNT;
     }
@@ -204,6 +208,7 @@ EN_terminalError_t setMaxAmount(ST_terminalData_t *termData, float32 maxAmount)
         return INVALID_MAX_AMOUNT;
     }
     else{
+
         termData->maxTransAmount=maxAmount;
         return TERMINAL_OK;
     }
@@ -233,19 +238,18 @@ void setMaxAmountTest(void)
     printf("Expected Result: TERMINAL_OK\n");
     printf("Actual Result:%s\n",Test==TERMINAL_OK? "TERMINAL_OK":"INVALID_MAX_AMOUNT");
 }
-EN_terminalError_t isValidCardPAN(ST_cardData_t *cardData)
-{
-    if (cardData == NULL) {
-        return INVALID_CARD;
-    }
 
+int32_t isLuhnValid(const char *pan) {
+    if (pan == NULL) {
+        return 0;
+    }
     uint32_t OddSum = 0;
     uint32_t EvenSum = 0;
     uint32_t DoubleEven = 0;
-    int32_t Length = strlen(cardData->primaryAccountNumber);
+    int32_t Length = strlen(pan);
 
     for (int32_t i = Length - 1; i >= 0; i--) {
-        uint32_t digit = cardData->primaryAccountNumber[i] - '0';
+        uint32_t digit = pan[i] - '0';
 
         if ((Length - i) % 2 == 0) {
             DoubleEven = digit * 2;
@@ -259,40 +263,39 @@ EN_terminalError_t isValidCardPAN(ST_cardData_t *cardData)
     }
 
     uint32_t check = EvenSum + OddSum;
-    if (check % 10 != 0 || check <= 0) {
+    return (check % 10 == 0);
+}
+EN_terminalError_t isValidCardPAN(ST_cardData_t *cardData) {
+    if (cardData == NULL) {
         return INVALID_CARD;
-    } else {
+    }
+
+    if (isLuhnValid(cardData->primaryAccountNumber)) {
         return TERMINAL_OK;
+    } else {
+        return INVALID_CARD;
     }
 }
-
-void isValidCardPANTest(void)
-{
-    ST_cardData_t CardData;
-    EN_terminalError_t Test;
+void isValidCardPANTest(void) {
+    ST_cardData_t card;
+   EN_terminalError_t Test;
     printf("Tester Name : Ibrahim Mohamed \n");
     printf("Function Name : isValidCardPAN \n");
     printf("===========================================\n");
-    printf("Test Case 1:NULL\n");
+     printf("Test Case 1:Valid PAN\n");
     printf("Input Data:");
-    Test=isValidCardPAN(NULL);
-    printf("Expected Result: INVALID_CARD\n");
+    getCardPAN(&card);
+     Test = isValidCardPAN(&card);
+   printf("Expected Result: TERMINAL_OK\n");
     printf("Actual Result:%s\n",Test==INVALID_CARD? "INVALID_CARD":"TERMINAL_OK");
     printf("===========================================\n");
-    printf("Test Case 2:Not Luhn Number\n");
+     printf("Test Case 2:Invalid PAN\n");
     printf("Input Data:");
-    getCardPAN(&CardData);
-    Test=isValidCardPAN(&CardData);
-    printf("Expected Result: INVALID_CARD\n");
+    getCardPAN(&card);
+     Test = isValidCardPAN(&card);
+   printf("Expected Result: INVALID_CARD\n");
     printf("Actual Result:%s\n",Test==INVALID_CARD? "INVALID_CARD":"TERMINAL_OK");
-    printf("===========================================\n");
-    printf("Test Case 3:Luhn Number\n");
-    printf("Input Data:");
-    getCardPAN(&CardData);
-    Test=isValidCardPAN(&CardData);
-    printf("Expected Result: TERMINAL_OK\n");
-    printf("Actual Result:%s\n",Test==INVALID_CARD? "INVALID_CARD":"TERMINAL_OK");
-
 }
+
 
 

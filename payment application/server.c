@@ -202,7 +202,7 @@ EN_serverError_t saveTransaction(ST_transaction_t *transData) {
     int32_t transaction_count = ReadTransactionsFromFile("transaction.txt", transaction_DB);
 
     if (transaction_count >= 300) {
-        printf("SAVING_FAILED\n");
+       // printf("SAVING_FAILED\n");
         return SAVING_FAILED;
     }
 
@@ -215,11 +215,11 @@ EN_serverError_t saveTransaction(ST_transaction_t *transData) {
     transaction_DB[transaction_count].transState = transData->transState;
      transData->transactionSequenceNumber = transaction_count + 1;
     if (SaveTransactionsToFile("transaction.txt", transaction_DB, transaction_count + 1) != 0) {
-        printf("SAVING_FAILED\n");
+      //  printf("SAVING_FAILED\n");
         return SAVING_FAILED;
     }
 
-    printf("SERVER_OK\n");
+   // printf("SERVER_OK\n");
     return SERVER_OK;
 }
 
@@ -271,6 +271,15 @@ EN_serverError_t recieveTransactionData(ST_transaction_t *transData, List *accou
 
     ST_accountsDB_t *account = NULL;
     ListNode *currentNode = accountsList->head;
+    getCardPAN(&transData->cardHolderData);
+    getCardHolderName(&transData->cardHolderData);
+    printf("%s\n", &transData->cardHolderData.cardHolderName);
+    getCardExpiryDate(&transData->cardHolderData);
+    printf("%s\n", &transData->cardHolderData.cardExpirationDate);
+    getTransactionDate(&transData->terminalData);
+    printf("%s\n", &transData->terminalData.transactionDate);
+    setMaxAmount(&transData->terminalData, 100.00);
+    getTransactionAmount(&transData->terminalData);
 
     while (currentNode != NULL) {
         ST_accountsDB_t *currentAccount = (ST_accountsDB_t *)currentNode->ptr;
@@ -283,29 +292,29 @@ EN_serverError_t recieveTransactionData(ST_transaction_t *transData, List *accou
     }
 
     if (account == NULL) {
-        printf("Actual Result : FRAUD_CARD\n");
+       // printf("Actual Result : FRAUD_CARD\n");
         return FRAUD_CARD;
     }
 
     if (isBlockedAccount(account) == BLOCKED_ACCOUNT) {
-        printf("Actual Result : DECLINED_STOLEN_CARD\n");
+      //  printf("Actual Result : DECLINED_STOLEN_CARD\n");
         return DECLINED_STOLEN_CARD;
     }
 
     if (isAmountAvailable(&transData->terminalData, account) == LOW_BALANCE) {
-        printf("Actual Result : DECLINED_INSUFFECIENT_FUND\n");
+       // printf("Actual Result : DECLINED_INSUFFECIENT_FUND\n");
         return DECLINED_INSUFFECIENT_FUND;
     }
 
     account->balance -= transData->terminalData.transAmount;
-
+     printf("New Account Balance: %.2f\n", account->balance);
     EN_serverError_t saveResult = saveTransaction(transData);
     if (saveResult != SERVER_OK) {
-        printf("Actual Result : INTERNAL_SERVER_ERROR\n");
+       // printf("Actual Result : INTERNAL_SERVER_ERROR\n");
         return INTERNAL_SERVER_ERROR;
     }
 
-    printf("Actual Result : APPROVED\n");
+    //printf("Actual Result : APPROVED\n");
     return APPROVED;
 }
 

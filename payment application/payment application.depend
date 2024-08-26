@@ -73,14 +73,15 @@
 	"platform_types.h"
 	"server.h"
 
-1724282180 source:c:\users\doc\desktop\new folder (6)\payment appliction\payment-application\payment application\app.c
+1724688727 source:c:\users\doc\desktop\new folder (6)\payment appliction\payment-application\payment application\app.c
 	<stdio.h>
 	<stdlib.h>
 	"app.h"
 
-1724361492 c:\users\doc\desktop\new folder (6)\payment appliction\payment-application\payment application\app.h
+1724638481 c:\users\doc\desktop\new folder (6)\payment appliction\payment-application\payment application\app.h
+	"server.h"
 
-1724361492 source:c:\users\doc\desktop\new folder (6)\payment appliction\payment-application\payment application\card.c
+1724640211 source:c:\users\doc\desktop\new folder (6)\payment appliction\payment-application\payment application\card.c
 	<stdio.h>
 	<stdlib.h>
 	<string.h>
@@ -102,7 +103,7 @@
 	"server.h"
 	"list.h"
 
-1724618872 c:\users\doc\desktop\new folder (6)\payment appliction\payment-application\payment application\server.h
+1724640010 c:\users\doc\desktop\new folder (6)\payment appliction\payment-application\payment application\server.h
 	"platform_types.h"
 	"card.h"
 	"terminal.h"
@@ -120,7 +121,7 @@
 	<stdlib.h>
 	"list.h"
 
-1724624330 source:c:\users\doc\desktop\new folder (6)\payment appliction\payment-application\payment application\main.c
+1724638481 source:c:\users\doc\desktop\new folder (6)\payment appliction\payment-application\payment application\main.c
 	<stdio.h>
 	<stdlib.h>
 	"platform_types.h"
@@ -130,14 +131,14 @@
 	"server.h"
 	"list.h"
 
-1724625285 source:c:\users\doc\desktop\new folder (6)\payment appliction\payment-application\payment application\server.c
+1724688334 source:c:\users\doc\desktop\new folder (6)\payment appliction\payment-application\payment application\server.c
 	<stdio.h>
 	<stdlib.h>
 	<string.h>
 	<ctype.h>
 	"server.h"
 
-1724361492 source:c:\users\doc\desktop\new folder (6)\payment appliction\payment-application\payment application\terminal.c
+1724640331 source:c:\users\doc\desktop\new folder (6)\payment appliction\payment-application\payment application\terminal.c
 	<stdio.h>
 	<stdlib.h>
 	<string.h>

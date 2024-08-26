@@ -6,7 +6,9 @@
 EN_cardError_t getCardHolderName (ST_cardData_t *cardData)
 {
     uint8_t name[27]={};
+    printf("Enter Card Holder's Name: ");
     gets(name);
+    fflush(stdin);
     if( cardData == NULL || strlen(name)>24 || strlen(name)<20){
         return WRONG_NAME;
     }
@@ -60,7 +62,9 @@ void getCardHolderNameTest(void)
 EN_cardError_t getCardExpiryDate(ST_cardData_t *cardData)
 {
     uint8_t date[7]={};
+    printf("Enter Card Expiry Date: ");
     gets(date);
+    fflush(stdin);
     if( cardData == NULL || strlen(date) != 5){
         return WRONG_EXP_DATE;
     }
@@ -112,7 +116,9 @@ void getCardExpiryDateTest (void)
 EN_cardError_t getCardPAN(ST_cardData_t *cardData)
 {
     uint8_t CardPAN[25]={};
+        printf("Enter Card Pan: ");
         gets(CardPAN);
+        fflush(stdin);
          if( cardData == NULL || strlen(CardPAN)>19 || strlen(CardPAN)<16){
             return WRONG_PAN;
         }
