@@ -4,9 +4,8 @@
 #include "server.h"
 #include "list.h"
 
-int32_t ReadToFile(const uint8_t* FileName , List *pl);
-int32_t ReadTransactionsFromFile(const uint8_t *FileName, ST_transaction_t *transactions);
-EN_transState_t mapStringToTransState(const char *stateStr);
-void SaveTransactionsToFile(const uint8_t *FileName, ST_transaction_t *transactions, int32_t count);
-const char* mapTransStateToString(EN_transState_t transState);
+void ReadFromFile();
+void UpdateFile();
+int32_t  ReadTransactionsFromFile();
+int32_t  SaveTransactionsToFile();
 #endif // FILE_HANDLING_H_INCLUDED

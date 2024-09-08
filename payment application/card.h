@@ -2,6 +2,11 @@
 #define CARD_H_INCLUDED
 #include "platform_types.h"
 
+#define MAX_NAME_LENGTH 27
+#define MAX_EXP_DATE_LENGTH 7
+#define EXP_DATE_FORMAT_LENGTH 5
+#define MAX_PAN_LENGTH 25
+
 typedef struct ST_cardData_t
 {
 uint8_t cardHolderName[25];

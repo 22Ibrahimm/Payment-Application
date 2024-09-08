@@ -4,6 +4,9 @@
 #include "card.h"
 #include "terminal.h"
 #include "list.h"
+
+
+
 typedef enum EN_transState_t
 {
 APPROVED, DECLINED_INSUFFECIENT_FUND, DECLINED_STOLEN_CARD,
@@ -37,18 +40,20 @@ float32 balance;
 EN_accountState_t state;
 uint8_t primaryAccountNumber[20];
 }ST_accountsDB_t;
-static ST_transaction_t transaction_DB[300]={0};
-EN_serverError_t recieveTransactionData(ST_transaction_t *transData, List *accountsList);
-EN_serverError_t isValidAccount(ST_cardData_t *cardData, ST_accountsDB_t **accountReference,List *pl);
+
+List Account_DB;
+List Transaction_DB;
+
+EN_transState_t recieveTransactionData(ST_transaction_t *transData);
+EN_serverError_t isValidAccount(ST_cardData_t *cardData, ST_accountsDB_t **accountReference);
 EN_serverError_t isBlockedAccount(ST_accountsDB_t *accountReference) ;
 EN_serverError_t isAmountAvailable(ST_terminalData_t *termData, ST_accountsDB_t *accountReference);
 EN_serverError_t saveTransaction(ST_transaction_t *transData);
-void listSavedTransactions(void);
+ void listSavedTransactions(void);
 void isValidAccountTest(void);
 void isBlockedAccountTest(void);
 void isAmountAvailableTest(void);
-void listSavedTransactionsTest(void);
-void recieveTransactionDataTest(void);
-void saveTransactionTest(void);
+
+
 
 #endif // SERVER_H_INCLUDED

@@ -1,43 +1,97 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "app.h"
-void appStart(void)
+void App_Start (void)
 {
-    ST_transaction_t trans;
-    ST_accountsDB_t *ref;
-    List l;
-    CreateList(&l);
-    ReadToFile("file.txt", &l);
-    EN_transState_t transvariable=recieveTransactionData(&trans,&l);
+            int userChoice=1;
+            while (userChoice)
+            {
+            CreateList (&Transaction_DB);
+            CreateList (&Account_DB);
 
-    if(isCardExpired(&trans.cardHolderData,&trans.terminalData)==TERMINAL_OK){
-        if (isBelowMaxAmount(&trans.terminalData) == TERMINAL_OK) {
-                if(isValidAccount(&trans.cardHolderData,&ref,&l)==SERVER_OK){
-                    if (transvariable == APPROVED){
-                        if(saveTransaction(&trans)==SERVER_OK){
-                            printf("\nTranscation Saved");
-                        }
-                        else{
-                            printf("\nSaving Failed");
-                        }
-                    }
-                    else if (transvariable == DECLINED_STOLEN_CARD)
-				{
-					printf("\nDECLINED_STOLEN_CARD");
-				}
-				else if (transvariable == DECLINED_INSUFFECIENT_FUND) {
-					printf("\nDECLINED_INSUFFECIENT_FUND");
-				}
-				else {
-				 }
+                do {
+                 printf("\n------- PAYMENT APPLICATION --------\n");
+                printf("                                  \n");
+                printf("     1. Do a transaction          \n");
+                printf("                                  \n");
+                printf("     2. Display transactions list \n");
+                printf("                                  \n");
+                printf("     0. Exit                      \n");
+
+                printf("\nPlease select your choice : ");
+                scanf(" %d", &userChoice);
+                fflush(stdin);
+                if (userChoice == 1)
+                {
+                    userChoice = 1;
+
+                ReadFromFile ();
+
+                ST_transaction_t *transData = (ST_transaction_t *)malloc(sizeof(ST_transaction_t));
+                if (transData == NULL)
+                {
+                printf("Out Of Memory \n");
+                return;
                 }
 
+                EN_transState_t Trans_State;
+
+                Trans_State=recieveTransactionData (transData);
+
+
+
+                if (Trans_State == INTERNAL_SERVER_ERROR)
+                {
+                printf("\nTransaction can't be saved\n");
+                }
+                else if (Trans_State == FRAUD_CARD)
+                {
+                printf("\nAccount doesn't exist\n");
+                }
+                else if (Trans_State == DECLINED_INSUFFECIENT_FUND)
+                {
+                printf("\nAmount isn't available\n");
+                }
+                else if (Trans_State == DECLINED_STOLEN_CARD)
+                {
+                printf("\nAccount is blocked\n");
+                }
+                else if (Trans_State == APPROVED)
+                {
+                printf("\nTransaction Approved\n");
+                }
+
+                EN_serverError_t Server_State = saveTransaction(transData);
+
+                if (Server_State == SAVING_FAILED)
+                printf("\nFailed to save transaction data.\n");
+
+
+                free (transData);
+
+                break;
+                }
+                else if (userChoice == 2)
+                {
+                    userChoice = 2;
+                    ReadTransactionsFromFile ();
+                    listSavedTransactions ();
+                    break;
+                }
+                else if (userChoice == 0)
+                {
+                    userChoice = 0;
+                    break;
+                }
+                else
+                {
+                    printf("Invalid input, Please enter '1' or '0'.\n");
+                }
+            }
+
+        while (1);
+
+        clear_list (&Account_DB);
+        clear_list (&Transaction_DB);
     }
-    else if (isBelowMaxAmount(&trans.terminalData) == EXCEED_MAX_AMOUNT) {
-			printf("Exceed Max Amount");
-		}
-}
-else if (isCardExpired(&trans.cardHolderData, &trans.terminalData) == EXPIRED_CARD) {
-		printf("Expired Card");
-	}
 }

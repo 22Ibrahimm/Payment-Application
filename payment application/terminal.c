@@ -7,19 +7,22 @@
 
 EN_terminalError_t getTransactionDate(ST_terminalData_t *termData)
 {
-    uint8_t Date[15]={};
+    uint8_t Date[MAX_DATE_LENGTH]={};
     printf("Enter Transaction Date: ");
     gets(Date);
     fflush(stdin);
+    // Ensure the termData pointer is not NULL, the length of the date is exactly 10 characters (DD/MM/YYYY),
+    // and the date format has slashes in the correct positions. Also check if the month part is valid (01-12).
     if(termData == NULL || strlen(Date)!=10 || Date[2]!='/' || Date[5]!='/'  || (Date[3]=='1' && Date[4]>'2')){
-        return WRONG_DATE;
+        return WRONG_DATE;   // Return an error if the date format is invalid
     }
     else{
+             // Copy the valid transaction date to the termData structure
          for(uint32_t i=0;i<strlen(Date);++i){
              termData->transactionDate[i]=Date[i];
          }
-         termData->transactionDate[strlen(Date)]='\0';
-         return TERMINAL_OK;
+         termData->transactionDate[strlen(Date)]='\0'; // Null-terminate
+         return TERMINAL_OK; // Return success if the date is valid
     }
 }
 void getTransactionDateTest(void)
@@ -61,27 +64,31 @@ void getTransactionDateTest(void)
 }
 EN_terminalError_t isCardExpired(ST_cardData_t *cardData, ST_terminalData_t *termData)
 {
+     // Check if the pointers are NULL to avoid segmentation faults
     if(cardData == NULL || termData == NULL){
         return EXPIRED_CARD;
     }
+     // Compare expiration year with transaction year
     if(cardData->cardExpirationDate[3]<termData->transactionDate[8]
     ||((cardData->cardExpirationDate[3]==termData->transactionDate[8])
     &&(cardData->cardExpirationDate[4]<termData->transactionDate[9]))){
-        return EXPIRED_CARD;
+        return EXPIRED_CARD; // Return an error if the expiration year is before the transaction year
      }
+      // If the years are the same, compare expiration month with transaction month
             if((cardData->cardExpirationDate[3]==termData->transactionDate[8])
             &&(cardData->cardExpirationDate[4]<termData->transactionDate[9])){
+                 // Compare the months
                 if(cardData->cardExpirationDate[0]<termData->transactionDate[3]
                 ||((cardData->cardExpirationDate[0]==termData->transactionDate[3])
                  &&(cardData->cardExpirationDate[1]<termData->transactionDate[4]))){
-                         return EXPIRED_CARD;
+                         return EXPIRED_CARD; // Return an error if the expiration month is before the transaction month
             }
             else{
                 return TERMINAL_OK;
             }
         }
         else{
-            return TERMINAL_OK;
+            return TERMINAL_OK; // Return success if the card is not expired
         }
 }
 void isCardExpriedTest(void)
@@ -130,13 +137,13 @@ EN_terminalError_t getTransactionAmount(ST_terminalData_t *termData)
     float32 Amount=0;
     printf("Enter Transction Amount: ");
     scanf("%f",&Amount);
-    fflush(stdin);
+    // Ensure the termData pointer is not NULL, and the amount is greater than 0
     if(termData == NULL || Amount <= 0 ){
-        return INVALID_AMOUNT;
+        return INVALID_AMOUNT; // Return an error if the amount is invalid
     }
     else{
-        termData->transAmount=Amount;
-        return TERMINAL_OK;
+        termData->transAmount=Amount; // Store the valid amount in termData
+        return TERMINAL_OK; // Return success if the amount is valid
     }
 }
 void getTransactionAmountTest(void)
@@ -166,12 +173,13 @@ void getTransactionAmountTest(void)
 }
 EN_terminalError_t isBelowMaxAmount(ST_terminalData_t *termData)
 {
-    termData->maxTransAmount=200;
+    //termData->maxTransAmount=200;
+     // Check if the transaction amount exceeds the maximum allowed amount
     if(termData == NULL || termData->transAmount > termData->maxTransAmount){
-        return EXCEED_MAX_AMOUNT;
+        return EXCEED_MAX_AMOUNT; // Return error if the transaction amount exceeds the max amount
     }
     else{
-        return TERMINAL_OK;
+        return TERMINAL_OK; // Return success if the amount is within the limit
     }
 }
 void isBelowMaxAmountTest(void)
@@ -204,13 +212,14 @@ void isBelowMaxAmountTest(void)
 }
 EN_terminalError_t setMaxAmount(ST_terminalData_t *termData, float32 maxAmount)
 {
-    if(maxAmount<=0 || termData == NULL){
-        return INVALID_MAX_AMOUNT;
+    // Check if the provided maxAmount is less than or equal to zero, or if termData is NULL
+    if(maxAmount <= 0 || termData == NULL){
+        return INVALID_MAX_AMOUNT; // Return error if the maximum amount is invalid
     }
     else{
-
+        // Set the maximum transaction amount in the terminal data structure
         termData->maxTransAmount=maxAmount;
-        return TERMINAL_OK;
+        return TERMINAL_OK; // Return success if the maximum amount is set correctly
     }
 }
 void setMaxAmountTest(void)
@@ -243,12 +252,22 @@ int32_t isLuhnValid(const char *pan) {
     if (pan == NULL) {
         return 0;
     }
+
     uint32_t OddSum = 0;
     uint32_t EvenSum = 0;
     uint32_t DoubleEven = 0;
     int32_t Length = strlen(pan);
 
+    if (Length < 13 || Length > 19) {
+        return 0;
+    }
+
     for (int32_t i = Length - 1; i >= 0; i--) {
+
+        if (pan[i] < '0' || pan[i] > '9') {
+            return 0;
+        }
+
         uint32_t digit = pan[i] - '0';
 
         if ((Length - i) % 2 == 0) {

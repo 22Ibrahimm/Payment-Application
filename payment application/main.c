@@ -7,11 +7,9 @@
 #include "server.h"
 #include "list.h"
 
+
 int main()
 {
-//List l;
-//CreateList(&l);
-//ReadToFile("file.txt", &l);
 
 //getCardHolderNameTest();
 //getCardExpiryDateTest();
@@ -22,15 +20,12 @@ int main()
 //isBelowMaxAmountTest();
 //setMaxAmountTest();
 //isValidCardPANTest();
-//readAccountsFromFile("file.txt",&l);
-//DisplayList(&l, PrintAccount);
 //isValidAccountTest();
 //isBlockedAccountTest();
 //isAmountAvailableTest();
-//listSavedTransactions();
-//recieveTransactionDataTest();
-//saveTransactionTest();
-//recieveTransactionDataTest();
-appStart();
+
+
+App_Start();
+
     return 0;
 }

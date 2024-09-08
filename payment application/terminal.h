@@ -3,6 +3,8 @@
 #include "platform_types.h"
 #include "card.h"
 
+#define MAX_DATE_LENGTH 15
+
 typedef struct ST_terminalData_t
 {
 float32 transAmount;

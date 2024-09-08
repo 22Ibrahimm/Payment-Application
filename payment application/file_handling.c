@@ -2,109 +2,164 @@
 #include <stdlib.h>
 #include "file_handling.h"
 
-int32_t  ReadToFile(const uint8_t* FileName , List *pl)
+void  ReadFromFile()
 {
-    FILE *My_file=NULL;
-    My_file=fopen("file.txt","r");
-    if(My_file==NULL){
+    FILE *file = fopen("D:\\important\\project\\payment appliction\\Payment-Application\\payment application\\file.txt", "r");
+    if (file == NULL) {
         printf("Error opening file!\n");
         return -1;
     }
-    ST_accountsDB_t *accountDB;
-    uint32_t pos=0;
-  while (1) {
-        accountDB = (ST_accountsDB_t *)malloc(sizeof(ST_accountsDB_t));
-        if (accountDB == NULL) {
-            printf("Memory allocation failed.\n");
-            fclose(My_file);
-            return -1;
+    int32_t i=0;
+    uint8_t state[8];
+
+    while (!feof(file))
+    {
+        ST_accountsDB_t *account = (ST_accountsDB_t *)malloc(sizeof(ST_accountsDB_t));
+         if (account == NULL)
+        {
+            printf("Memory allocation failed\n");
+            fclose(file);
+            return;
         }
-        int32_t result = fscanf(My_file, "%f %19s %i", &accountDB->balance, accountDB->primaryAccountNumber, &accountDB->state);
-        if (result == EOF) {
-            free(accountDB);
+        if (fscanf(file, "%f %s %s", &account->balance, account->primaryAccountNumber, state) != 3)
+        {
+            free(account);
             break;
         }
-         else if (result !=3) {
-            printf("Error reading file data.\n");
-            free(accountDB);
-            fclose(My_file);
-            return -1;
+
+        if (strcmp(state, "RUNNING") == 0)
+            account->state = RUNNING;
+        else if (strcmp(state, "BLOCKED") == 0)
+            account->state = BLOCKED;
+        else
+        {
+            printf("Unknown account state: %s\n", state);
+            free(account);
+            continue;
         }
-        insertAccount(pos, accountDB, pl);
-        pos++;
+
+        insertAccount(i, account, &Account_DB);
+        i++;
     }
 
-    fclose(My_file);
-    return 1;
+    fclose(file);
+}
+void UpdateFile()
+{
+    FILE *file=fopen("D:\\important\\project\\payment appliction\\Payment-Application\\payment application\\file.txt","w");
+
+    if (file == NULL)
+    {
+        printf("Error, File is Not Found\n");
+        return;
+    }
+
+    char state[8];
+    ListNode *pn = Account_DB.head;
+
+    while (pn)
+    {
+        ST_accountsDB_t *PtrAccount = (ST_accountsDB_t *)pn->ptr;
+
+        if (PtrAccount->state == RUNNING)       strcpy (state,"RUNNING");
+        else if (PtrAccount->state == BLOCKED)  strcpy (state,"BLOCKED");
+        else                                    strcpy (state,"ERROR");
+
+        fprintf(file, "%f %s %s\n", PtrAccount->balance, PtrAccount->primaryAccountNumber, state);
+        pn = pn->next;
+    }
+    fclose(file);
 }
 
-int32_t ReadTransactionsFromFile(const uint8_t *FileName, ST_transaction_t *transactions) {
-    FILE *transaction = fopen((const char *)FileName, "r");
-    if (transaction == NULL) {
-        printf("Error opening file!\n");
+int32_t  ReadTransactionsFromFile() {
+    FILE *file = fopen("D:\\important\\project\\payment appliction\\Payment-Application\\payment application\\transaction.txt", "r");
+    if (file == NULL) {
         return -1;
     }
 
-    int32_t transaction_count = 0;
-    char transStateStr[30];
+    int32_t count = 0;
+    uint8_t state[30];
 
-    while (fscanf(transaction,
-                  "%49s %19s %7s %10s %f %f %29s %u\n",
-                  transactions[transaction_count].cardHolderData.cardHolderName,
-                  transactions[transaction_count].cardHolderData.primaryAccountNumber,
-                  transactions[transaction_count].cardHolderData.cardExpirationDate,
-                  transactions[transaction_count].terminalData.transactionDate,
-                  &transactions[transaction_count].terminalData.transAmount,
-                  &transactions[transaction_count].terminalData.maxTransAmount,
-                  transStateStr,
-                  &transactions[transaction_count].transactionSequenceNumber) != EOF) {
-        transactions[transaction_count].transState = mapStringToTransState(transStateStr);
-        transaction_count++;
-        if (transaction_count >= 300) break;
+     while (!feof(file))
+    {
+        ST_transaction_t *transaction=(ST_transaction_t *)malloc(sizeof(ST_transaction_t));
+        if (transaction == NULL)
+        {
+            printf("Memory allocation failed\n");
+            fclose(file);
+            return -1;
+        }
+
+        if (fscanf(file,"%d %s %f %s %f %s %s %49[^\n]\n"
+                  ,&transaction->transactionSequenceNumber
+                  ,transaction->terminalData.transactionDate
+                  ,&transaction->terminalData.transAmount
+                  ,state
+                  ,&transaction->terminalData.maxTransAmount
+                  ,transaction->cardHolderData.cardExpirationDate
+                  ,transaction->cardHolderData.primaryAccountNumber
+                  ,transaction->cardHolderData.cardHolderName) != 8)
+        {
+            free(transaction);
+            break;
+        }
+
+        if (strcmp(state, "APPROVED") == 0) transaction->transState = APPROVED;
+        else if (strcmp(state, "DECLINED_INSUFFECIENT_FUND") == 0) transaction->transState = DECLINED_INSUFFECIENT_FUND;
+        else if (strcmp(state, "DECLINED_STOLEN_CARD") == 0) transaction->transState = DECLINED_STOLEN_CARD;
+        else if (strcmp(state, "FRAUD_CARD") == 0) transaction->transState = FRAUD_CARD;
+        else if (strcmp(state, "INTERNAL_SERVER_ERROR") == 0) transaction->transState = INTERNAL_SERVER_ERROR;
+        else
+        {
+            printf("Unknown account state: %s\n", state);
+            free(transaction);
+            continue;
+        }
+
+        insertAccount(count, transaction, &Transaction_DB);
+        count ++;
+
     }
-
-    fclose(transaction);
-    return transaction_count;
+    fclose(file);
+    return count;
 }
 
-EN_transState_t mapStringToTransState(const char *stateStr) {
-    if (strcmp(stateStr, "APPROVED") == 0) return APPROVED;
-    if (strcmp(stateStr, "DECLINED_INSUFFECIENT_FUND") == 0) return DECLINED_INSUFFECIENT_FUND;
-    if (strcmp(stateStr, "DECLINED_STOLEN_CARD") == 0) return DECLINED_STOLEN_CARD;
-    if (strcmp(stateStr, "FRAUD_CARD") == 0) return FRAUD_CARD;
-    if (strcmp(stateStr, "INTERNAL_SERVER_ERROR") == 0) return INTERNAL_SERVER_ERROR;
-    return INTERNAL_SERVER_ERROR;
-}
-void SaveTransactionsToFile(const uint8_t *FileName, ST_transaction_t *transactions, int32_t count) {
-    FILE *transaction = fopen((const char *)FileName, "w");
-    if (transaction == NULL) {
+
+int32_t  SaveTransactionsToFile()
+{
+    FILE *file = fopen("D:\\important\\project\\payment appliction\\Payment-Application\\payment application\\transaction.txt", "w");
+    if (file == NULL) {
         printf("Error opening file!\n");
         return;
     }
 
-    for (int32_t i = 0; i < count; i++) {
-        fprintf(transaction,
-                "%s %s %s %s %.2f %.2f %s %u\n",
-                transactions[i].cardHolderData.cardHolderName,
-                transactions[i].cardHolderData.primaryAccountNumber,
-                transactions[i].cardHolderData.cardExpirationDate,
-                transactions[i].terminalData.transactionDate,
-                transactions[i].terminalData.transAmount,
-                transactions[i].terminalData.maxTransAmount,
-                mapTransStateToString(transactions[i].transState),
-                transactions[i].transactionSequenceNumber);
-    }
+    int32_t count=0;
+    uint8_t state[30];
+    ListNode *pn = Transaction_DB.head;
+    while (pn)
+    {
+        ST_transaction_t *PtrAccount = (ST_transaction_t *)pn->ptr;
+        PtrAccount->transactionSequenceNumber= ++count;
 
-    fclose(transaction);
-}
+        if      (PtrAccount->transState == APPROVED)                      strcpy (state,"APPROVED");
+        else if (PtrAccount->transState == DECLINED_INSUFFECIENT_FUND)    strcpy (state,"DECLINED_INSUFFECIENT_FUND");
+        else if (PtrAccount->transState == DECLINED_STOLEN_CARD)          strcpy (state,"DECLINED_STOLEN_CARD");
+        else if (PtrAccount->transState == FRAUD_CARD)                    strcpy (state,"FRAUD_CARD");
+        else if (PtrAccount->transState == INTERNAL_SERVER_ERROR)         strcpy (state,"INTERNAL_SERVER_ERROR");
+        else                                                              strcpy (state,"ERROR");
 
-const char* mapTransStateToString(EN_transState_t transState) {
-    switch (transState) {
-        case APPROVED: return "APPROVED";
-        case DECLINED_INSUFFECIENT_FUND: return "DECLINED_INSUFFECIENT_FUND";
-        case DECLINED_STOLEN_CARD: return "DECLINED_STOLEN_CARD";
-        case FRAUD_CARD: return "FRAUD_CARD";
-        case INTERNAL_SERVER_ERROR: return "INTERNAL_SERVER_ERROR";
-        default: return "UNKNOWN_STATE";
+        fprintf(file,"%d %s %f %s %f %s %s %s\n"
+                  ,PtrAccount->transactionSequenceNumber
+                  ,PtrAccount->terminalData.transactionDate
+                  ,PtrAccount->terminalData.transAmount
+                  ,state
+                  ,PtrAccount->terminalData.maxTransAmount
+                  ,PtrAccount->cardHolderData.cardExpirationDate
+                  ,PtrAccount->cardHolderData.primaryAccountNumber
+                  ,PtrAccount->cardHolderData.cardHolderName);
+
+        pn = pn->next;
     }
+    fclose(file);
+    return 1;
 }
