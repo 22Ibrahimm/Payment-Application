@@ -17,8 +17,8 @@ EN_cardError_t getCardHolderName (ST_cardData_t *cardData)
     }
     else{
         uint32_t i;
-        for(i=0;i<strlen(name);++i){
-            if(!isalpha(name[i])&&name[i]!=' '){
+        for(i=0 ; i<strlen(name) ; ++i){
+            if(!isalpha(name[i]) && name[i]!=' '){
                 return WRONG_NAME;
             }
         }
@@ -75,7 +75,7 @@ EN_cardError_t getCardExpiryDate(ST_cardData_t *cardData)
     }
     else{
         uint32_t i=0;
-        for(i=0;i<strlen(date);++i){
+        for(i=0 ; i<strlen(date) ; ++i){
             if(date[2] != '/' ||(date[0] =='1' && date[1] > '2')|| date[0] > '1' ){
                 return WRONG_EXP_DATE; // Return an error if the format is incorrect
             }

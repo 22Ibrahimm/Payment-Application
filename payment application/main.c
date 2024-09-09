@@ -1,12 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "platform_types.h"
-#include "card.h"
-#include "terminal.h"
-#include "platform_types.h"
-#include "server.h"
-#include "list.h"
-
+#include "app.h"
 
 int main()
 {

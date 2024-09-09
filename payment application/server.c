@@ -5,19 +5,21 @@
 #include "server.h"
 #include "file_handling.h"
 EN_serverError_t isValidAccount(ST_cardData_t *cardData, ST_accountsDB_t **accountReference) {
+    // Check if the provided card data is NULL
     if (cardData == NULL) {
         return ACCOUNT_NOT_FOUND;
     }
-
+    // Initialize the current node to point to the head of the accounts list
     ListNode *currentNode = Account_DB.head;
     *accountReference = NULL;
-
+    // Traverse through the linked list to find a matching account
     while (currentNode) {
+            // Compare the card's PAN with the PAN in the current account node
         if (strcmp((char *)cardData->primaryAccountNumber, ((ST_accountsDB_t*)currentNode->ptr)->primaryAccountNumber) == 0) {
-            *accountReference = (ST_accountsDB_t*)currentNode->ptr;
+            *accountReference = (ST_accountsDB_t*)currentNode->ptr;  // Set account reference to the matched account
             return SERVER_OK;
         }
-        currentNode = currentNode->next;
+        currentNode = currentNode->next; // Move to the next node in the list
     }
 
     return ACCOUNT_NOT_FOUND;
@@ -64,10 +66,11 @@ void isValidAccountTest(void)
 }
 
 EN_serverError_t isBlockedAccount(ST_accountsDB_t *accountReference) {
+    // Check if the provided account reference is NULL
     if (accountReference == NULL) {
         return ACCOUNT_NOT_FOUND;
     }
-
+    // Check if the account state is BLOCKED
     if (accountReference->state == BLOCKED) {
         return BLOCKED_ACCOUNT;
     } else {
@@ -146,10 +149,11 @@ void isBlockedAccountTest(void) {
 
 EN_serverError_t isAmountAvailable(ST_terminalData_t *termData, ST_accountsDB_t *accountReference)
 {
+     // Check if either terminal data or account reference is NULL
     if (termData == NULL || accountReference == NULL ) {
         return ACCOUNT_NOT_FOUND;
     }
-
+    // Check if the transaction amount exceeds the account balance
     if(termData->transAmount > accountReference->balance){
         return LOW_BALANCE;
     }
@@ -227,13 +231,18 @@ void isAmountAvailableTest(void) {
 }
 
 EN_serverError_t saveTransaction(ST_transaction_t *transData) {
+    // Check if the provided transaction data is NULL
      if (transData == NULL){
         return SAVING_FAILED;
      }
+
+     // Read existing transactions from file and get the transaction count
  int32_t transaction_count = ReadTransactionsFromFile();
 
+  // Insert the new transaction data into the transaction database
  insertAccount(transaction_count,transData,&Transaction_DB);
 
+ // Save the updated transaction database to file and check for success
  if (SaveTransactionsToFile () != 1){
         return SAVING_FAILED;
  }
@@ -245,14 +254,21 @@ EN_serverError_t saveTransaction(ST_transaction_t *transData) {
 
 void listSavedTransactions(void)
 {
+    // Start with the head of the transaction list
     ListNode *pn = Transaction_DB.head;
-    if (pn==NULL)
+
+    if (pn==NULL){
         printf ("\nThere are no transactions \n");
+    }
+
     char state[30];
+
+    // Iterate through the list of transactions
     while (pn)
     {
         ST_transaction_t *PtrAccount = (ST_transaction_t *)pn->ptr;
 
+        // Determine the state of the transaction
         if      (PtrAccount->transState == APPROVED)                      strcpy (state,"APPROVED");
         else if (PtrAccount->transState == DECLINED_INSUFFECIENT_FUND)    strcpy (state,"DECLINED_INSUFFECIENT_FUND");
         else if (PtrAccount->transState == DECLINED_STOLEN_CARD)          strcpy (state,"DECLINED_STOLEN_CARD");
@@ -260,6 +276,7 @@ void listSavedTransactions(void)
         else if (PtrAccount->transState == INTERNAL_SERVER_ERROR)         strcpy (state,"INTERNAL_SERVER_ERROR");
         else                                                              strcpy (state,"ERROR");
 
+         // Print transaction details
         printf("\n#####################################\n");
         printf("Transaction Sequence Number: %d\n" ,PtrAccount->transactionSequenceNumber );
         printf("Transaction Date: %s\n"            ,PtrAccount->terminalData.transactionDate);
@@ -270,20 +287,24 @@ void listSavedTransactions(void)
         printf("PAN: %s\n"                         ,PtrAccount->cardHolderData.primaryAccountNumber);
         printf("Card Expiration Date: %s\n"        ,PtrAccount->cardHolderData.cardExpirationDate);
         printf("#####################################\n");
-
+        printf("\n---------------------------------------------------------------------------\n");
+        // Move to the next transaction
         pn=pn->next;
     }
 }
 
 EN_transState_t recieveTransactionData(ST_transaction_t *transData)
 {
+    // Check if the transaction data pointer is NULL
     if (transData == NULL){
     return INTERNAL_SERVER_ERROR;
     }
-     ST_accountsDB_t *PtrAccount=NULL;
+
+    ST_accountsDB_t *PtrAccount=NULL;
     EN_cardError_t Card_State;
     EN_terminalError_t Term_State;
 
+    // Get the card holder's name and validate it
     Card_State = getCardHolderName (&transData->cardHolderData);
     while (Card_State != CARD_OK)
     {
@@ -292,6 +313,7 @@ EN_transState_t recieveTransactionData(ST_transaction_t *transData)
         Card_State = getCardHolderName(&transData->cardHolderData);
     }
 
+    // Get the card PAN and validate it
     Card_State = getCardPAN (&transData->cardHolderData);
     while (Card_State != CARD_OK)
     {
@@ -300,6 +322,7 @@ EN_transState_t recieveTransactionData(ST_transaction_t *transData)
         Card_State = getCardPAN(&transData->cardHolderData);
     }
 
+    // Get the card expiry date and validate it
     Card_State = getCardExpiryDate (&transData->cardHolderData);
     while (Card_State != CARD_OK)
     {
@@ -308,6 +331,7 @@ EN_transState_t recieveTransactionData(ST_transaction_t *transData)
         Card_State = getCardExpiryDate(&transData->cardHolderData);
     }
 
+    // Get the transaction date and validate it
     Term_State = getTransactionDate(&transData->terminalData);
     while (Term_State != TERMINAL_OK)
     {
@@ -316,14 +340,16 @@ EN_transState_t recieveTransactionData(ST_transaction_t *transData)
         Term_State = getTransactionDate(&transData->terminalData);
     }
 
-    Term_State = setMaxAmount(&transData->terminalData,100.000);
+    // Set the maximum allowed amount and validate it
+    Term_State = setMaxAmount(&transData->terminalData,1000.000);
     while (Term_State != TERMINAL_OK)
     {
         printf("Invalid amount, ");
         printf("Please try again.\n");
-        Term_State = setMaxAmount(&transData->terminalData,100.00);
+        Term_State = setMaxAmount(&transData->terminalData,1000.00);
     }
 
+    // Get the transaction amount and validate it
     Term_State = getTransactionAmount(&transData->terminalData);
     while (Term_State != TERMINAL_OK)
     {
@@ -332,6 +358,7 @@ EN_transState_t recieveTransactionData(ST_transaction_t *transData)
         Term_State = getTransactionAmount(&transData->terminalData);
     }
 
+     // Check if the card is expired
     if (isCardExpired(&transData->cardHolderData, &transData->terminalData) != TERMINAL_OK)
     {
         printf("\nCard is expired\n");
@@ -339,6 +366,7 @@ EN_transState_t recieveTransactionData(ST_transaction_t *transData)
         return INTERNAL_SERVER_ERROR;
     }
 
+    // Check if the card PAN is valid
     if (isValidCardPAN (&transData->cardHolderData) != TERMINAL_OK)
     {
         printf("\nInvalid PAN\n");
@@ -346,6 +374,7 @@ EN_transState_t recieveTransactionData(ST_transaction_t *transData)
         return INTERNAL_SERVER_ERROR;
     }
 
+    // Check if the transaction amount is below the maximum allowed
     if (isBelowMaxAmount(&transData->terminalData) != TERMINAL_OK)
     {
         printf("\nAmount Exceeds maximum allowed\n");
@@ -353,28 +382,31 @@ EN_transState_t recieveTransactionData(ST_transaction_t *transData)
         return INTERNAL_SERVER_ERROR;
     }
 
-
-
+    // Check if the account is valid
     if(isValidAccount(&transData->cardHolderData,&PtrAccount) == ACCOUNT_NOT_FOUND)
     {
         transData->transState = FRAUD_CARD;
         return FRAUD_CARD;
     }
 
+     // Check if the account is blocked
     if(isBlockedAccount(PtrAccount) == BLOCKED_ACCOUNT || isBlockedAccount(PtrAccount) == ACCOUNT_NOT_FOUND)
     {
         transData->transState = DECLINED_STOLEN_CARD;
         return DECLINED_STOLEN_CARD ;
     }
 
+    // Check if there are sufficient funds in the account
     if(isAmountAvailable(&transData->terminalData,PtrAccount) == LOW_BALANCE || isAmountAvailable(&transData->terminalData,PtrAccount) == ACCOUNT_NOT_FOUND)
     {
         transData->transState = DECLINED_INSUFFECIENT_FUND;
         return DECLINED_INSUFFECIENT_FUND;
     }
 
+    // Deduct the transaction amount from the account balance
     PtrAccount->balance -= transData->terminalData.transAmount;
 
+    // Update the file
     UpdateFile ();
     transData->transState = APPROVED;
     return APPROVED;

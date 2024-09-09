@@ -4,30 +4,37 @@
 void App_Start (void)
 {
             int userChoice=1;
-            while (userChoice)
+
+            while (userChoice)   // Loop until the user chooses to exit (userChoice == 0).
             {
-            CreateList (&Transaction_DB);
-            CreateList (&Account_DB);
+            CreateList (&Transaction_DB);    // Initialize the Transaction_DB linked list.
+            CreateList (&Account_DB);        // Initialize the Account_DB linked list.
 
+            // Display the menu options to the user.
                 do {
-                 printf("\n------- PAYMENT APPLICATION --------\n");
-                printf("                                  \n");
-                printf("     1. Do a transaction          \n");
-                printf("                                  \n");
-                printf("     2. Display transactions list \n");
-                printf("                                  \n");
-                printf("     0. Exit                      \n");
-
-                printf("\nPlease select your choice : ");
+            printf("\n=====================================\n");
+            printf("|         PAYMENT APPLICATION       |\n");
+            printf("=====================================\n");
+            printf("|  1. Perform a New Transaction     |\n");
+            printf("|-----------------------------------|\n");
+            printf("|  2. Display All Transactions      |\n");
+            printf("|-----------------------------------|\n");
+            printf("|  0. Exit                          |\n");
+            printf("=====================================\n");
+                printf("\nPlease select your choice: ");
                 scanf(" %d", &userChoice);
                 fflush(stdin);
+
                 if (userChoice == 1)
                 {
-                    userChoice = 1;
+                    userChoice = 1;  // Set userChoice to 1 to keep in the loop.
 
-                ReadFromFile ();
+                ReadFromFile ();   // Load account data from the file.
 
+
+                 // Allocate memory for a new transaction data structure.
                 ST_transaction_t *transData = (ST_transaction_t *)malloc(sizeof(ST_transaction_t));
+
                 if (transData == NULL)
                 {
                 printf("Out Of Memory \n");
@@ -36,10 +43,13 @@ void App_Start (void)
 
                 EN_transState_t Trans_State;
 
+
+                // Process the transaction and get the transaction state.
                 Trans_State=recieveTransactionData (transData);
 
 
 
+                // Display messages based on the transaction state.
                 if (Trans_State == INTERNAL_SERVER_ERROR)
                 {
                 printf("\nTransaction can't be saved\n");
@@ -61,6 +71,7 @@ void App_Start (void)
                 printf("\nTransaction Approved\n");
                 }
 
+                // Save the transaction to the database.
                 EN_serverError_t Server_State = saveTransaction(transData);
 
                 if (Server_State == SAVING_FAILED)
@@ -74,11 +85,11 @@ void App_Start (void)
                 else if (userChoice == 2)
                 {
                     userChoice = 2;
-                    ReadTransactionsFromFile ();
-                    listSavedTransactions ();
+                    ReadTransactionsFromFile ();   // Load the transactions from the file.
+                    listSavedTransactions ();      // Display the saved transactions.
                     break;
                 }
-                else if (userChoice == 0)
+                else if (userChoice == 0)   // Option 0: Exit the application.
                 {
                     userChoice = 0;
                     break;
@@ -91,7 +102,7 @@ void App_Start (void)
 
         while (1);
 
-        clear_list (&Account_DB);
-        clear_list (&Transaction_DB);
+        clear_list (&Account_DB);    // Clear the Account_DB linked list to free memory.
+        clear_list (&Transaction_DB);   // Clear the Transaction_DB linked list to free memory.
     }
 }

@@ -6,6 +6,7 @@
 
 void ReadFromFile();
 void UpdateFile();
-int32_t  ReadTransactionsFromFile();
-int32_t  SaveTransactionsToFile();
+int32_t ReadTransactionsFromFile();
+int32_t SaveTransactionsToFile();
+
 #endif // FILE_HANDLING_H_INCLUDED

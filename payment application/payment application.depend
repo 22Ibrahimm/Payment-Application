@@ -146,21 +146,21 @@
 	<time.h>
 	"terminal.h"
 
-1725781357 source:d:\important\project\payment appliction\payment-application\payment application\app.c
+1725867431 source:d:\important\project\payment appliction\payment-application\payment application\app.c
 	<stdio.h>
 	<stdlib.h>
 	"app.h"
 
-1725780872 d:\important\project\payment appliction\payment-application\payment application\app.h
+1725782330 d:\important\project\payment appliction\payment-application\payment application\app.h
 	"server.h"
 
-1725780872 d:\important\project\payment appliction\payment-application\payment application\server.h
+1725867431 d:\important\project\payment appliction\payment-application\payment application\server.h
 	"platform_types.h"
 	"card.h"
 	"terminal.h"
 	"list.h"
 
-1724361492 d:\important\project\payment appliction\payment-application\payment application\platform_types.h
+1725867431 d:\important\project\payment appliction\payment-application\payment application\platform_types.h
 
 1725780872 d:\important\project\payment appliction\payment-application\payment application\card.h
 	"platform_types.h"
@@ -172,19 +172,19 @@
 1725781637 d:\important\project\payment appliction\payment-application\payment application\list.h
 	"platform_types.h"
 
-1725780872 source:d:\important\project\payment appliction\payment-application\payment application\card.c
+1725792136 source:d:\important\project\payment appliction\payment-application\payment application\card.c
 	<stdio.h>
 	<stdlib.h>
 	<string.h>
 	<ctype.h>
 	"card.h"
 
-1725780872 source:d:\important\project\payment appliction\payment-application\payment application\file_handling.c
+1725866015 source:d:\important\project\payment appliction\payment-application\payment application\file_handling.c
 	<stdio.h>
 	<stdlib.h>
 	"file_handling.h"
 
-1725780872 d:\important\project\payment appliction\payment-application\payment application\file_handling.h
+1725866015 d:\important\project\payment appliction\payment-application\payment application\file_handling.h
 	"platform_types.h"
 	"server.h"
 	"list.h"
@@ -194,17 +194,12 @@
 	<stdlib.h>
 	"list.h"
 
-1725781653 source:d:\important\project\payment appliction\payment-application\payment application\main.c
+1725798085 source:d:\important\project\payment appliction\payment-application\payment application\main.c
 	<stdio.h>
 	<stdlib.h>
-	"platform_types.h"
-	"card.h"
-	"terminal.h"
-	"platform_types.h"
-	"server.h"
-	"list.h"
+	"app.h"
 
-1725781701 source:d:\important\project\payment appliction\payment-application\payment application\server.c
+1725866015 source:d:\important\project\payment appliction\payment-application\payment application\server.c
 	<stdio.h>
 	<stdlib.h>
 	<string.h>
@@ -212,7 +207,7 @@
 	"server.h"
 	"file_handling.h"
 
-1725613935 source:d:\important\project\payment appliction\payment-application\payment application\terminal.c
+1725796440 source:d:\important\project\payment appliction\payment-application\payment application\terminal.c
 	<stdio.h>
 	<stdlib.h>
 	<string.h>

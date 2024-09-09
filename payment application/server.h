@@ -5,8 +5,6 @@
 #include "terminal.h"
 #include "list.h"
 
-
-
 typedef enum EN_transState_t
 {
 APPROVED, DECLINED_INSUFFECIENT_FUND, DECLINED_STOLEN_CARD,
@@ -41,8 +39,9 @@ EN_accountState_t state;
 uint8_t primaryAccountNumber[20];
 }ST_accountsDB_t;
 
-List Account_DB;
-List Transaction_DB;
+// List structures for account and transaction databases
+List Account_DB;     // Linked list to store account data
+List Transaction_DB;  // Linked list to store transaction data
 
 EN_transState_t recieveTransactionData(ST_transaction_t *transData);
 EN_serverError_t isValidAccount(ST_cardData_t *cardData, ST_accountsDB_t **accountReference);

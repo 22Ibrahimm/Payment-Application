@@ -11,10 +11,14 @@ EN_terminalError_t getTransactionDate(ST_terminalData_t *termData)
     printf("Enter Transaction Date: ");
     gets(Date);
     fflush(stdin);
-    // Ensure the termData pointer is not NULL, the length of the date is exactly 10 characters (DD/MM/YYYY),
-    // and the date format has slashes in the correct positions. Also check if the month part is valid (01-12).
-    if(termData == NULL || strlen(Date)!=10 || Date[2]!='/' || Date[5]!='/'  || (Date[3]=='1' && Date[4]>'2')){
-        return WRONG_DATE;   // Return an error if the date format is invalid
+
+    if(termData == NULL){ //Ensure the termData pointer is not NULL,
+        return WRONG_DATE;
+    }
+    /* Ensure the length of the date is exactly 10 characters (DD/MM/YYYY),
+     and the date format has slashes in the correct positions. Also check if the month part is valid (01-12).*/
+    if(strlen(Date)!=10 || Date[2]!='/' || Date[5]!='/'  || (Date[3]=='1' && Date[4]>'2')){
+        return WRONG_DATE;
     }
     else{
              // Copy the valid transaction date to the termData structure
@@ -134,12 +138,16 @@ void isCardExpriedTest(void)
 }
 EN_terminalError_t getTransactionAmount(ST_terminalData_t *termData)
 {
+    if(termData == NULL){  //Ensure the termData pointer is not NULL,
+        return INVALID_AMOUNT;
+    }
+
     float32 Amount=0;
     printf("Enter Transction Amount: ");
     scanf("%f",&Amount);
-    // Ensure the termData pointer is not NULL, and the amount is greater than 0
-    if(termData == NULL || Amount <= 0 ){
-        return INVALID_AMOUNT; // Return an error if the amount is invalid
+    // Ensure the amount is greater than 0
+    if( Amount <= 0 ){
+        return INVALID_AMOUNT;
     }
     else{
         termData->transAmount=Amount; // Store the valid amount in termData
@@ -173,9 +181,12 @@ void getTransactionAmountTest(void)
 }
 EN_terminalError_t isBelowMaxAmount(ST_terminalData_t *termData)
 {
+    if(termData == NULL ){ //Ensure the termData pointer is not NULL.
+        return EXCEED_MAX_AMOUNT;
+    }
     //termData->maxTransAmount=200;
      // Check if the transaction amount exceeds the maximum allowed amount
-    if(termData == NULL || termData->transAmount > termData->maxTransAmount){
+    if( termData->transAmount > termData->maxTransAmount){
         return EXCEED_MAX_AMOUNT; // Return error if the transaction amount exceeds the max amount
     }
     else{
@@ -212,9 +223,12 @@ void isBelowMaxAmountTest(void)
 }
 EN_terminalError_t setMaxAmount(ST_terminalData_t *termData, float32 maxAmount)
 {
+    if( termData == NULL){
+        return INVALID_MAX_AMOUNT;
+    }
     // Check if the provided maxAmount is less than or equal to zero, or if termData is NULL
-    if(maxAmount <= 0 || termData == NULL){
-        return INVALID_MAX_AMOUNT; // Return error if the maximum amount is invalid
+    if(maxAmount <= 0 ){
+        return INVALID_MAX_AMOUNT;
     }
     else{
         // Set the maximum transaction amount in the terminal data structure
@@ -258,18 +272,20 @@ int32_t isLuhnValid(const char *pan) {
     uint32_t DoubleEven = 0;
     int32_t Length = strlen(pan);
 
-    if (Length < 13 || Length > 19) {
+    // Check if the length is within the valid range for credit card numbers
+    if (Length < 16 || Length > 19) {
         return 0;
     }
-
+    // Check if each character is a digit (between '0' and '9')
     for (int32_t i = Length - 1; i >= 0; i--) {
 
         if (pan[i] < '0' || pan[i] > '9') {
             return 0;
         }
 
-        uint32_t digit = pan[i] - '0';
+        uint32_t digit = pan[i] - '0'; // Convert character to integer digit
 
+        // Check if the digit's position from the right is even or odd
         if ((Length - i) % 2 == 0) {
             DoubleEven = digit * 2;
             if (DoubleEven > 9) {
@@ -281,14 +297,15 @@ int32_t isLuhnValid(const char *pan) {
         }
     }
 
-    uint32_t check = EvenSum + OddSum;
-    return (check % 10 == 0);
+    uint32_t check = EvenSum + OddSum; // Calculate the total sum
+    return (check % 10 == 0); // Return 1 if the total sum is divisible by 10 (valid number)
 }
 EN_terminalError_t isValidCardPAN(ST_cardData_t *cardData) {
+    // Check if the input card data pointer is NULL
     if (cardData == NULL) {
         return INVALID_CARD;
     }
-
+     // Use the Luhn algorithm to validate the Primary Account Number (PAN)
     if (isLuhnValid(cardData->primaryAccountNumber)) {
         return TERMINAL_OK;
     } else {
